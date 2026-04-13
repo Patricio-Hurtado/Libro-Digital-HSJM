@@ -62,9 +62,9 @@ const Identificacion = () => {
             {/* Buscador */}
             <div className="input-search-container mb-6">
                 <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
-                <input 
-                    type="text" 
-                    placeholder="Buscar por nombre o RUT..." 
+                <input
+                    type="text"
+                    placeholder="Buscar por nombre o RUT..."
                     className="input-search"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -72,51 +72,54 @@ const Identificacion = () => {
             </div>
 
             {/* Tabla dinámica párvulos */}
-            <div className="overflow-x-auto border border-gray-300 rounded-xl h-[300px] md:h-[400px]">
+            <div className="overflow-x-auto border border-gray-200 rounded-2xl shadow-sm bg-white h-75 md:h-100">
                 <table className="w-full text-left border-collapse">
-                    <thead className="bg-gray-50 text-gray-500 text-xs uppercase">
+                    <thead className="bg-gray-50/80 text-gray-500 text-[10px] uppercase tracking-widest">
                         <tr>
-                            <th className="p-4 font-semibold">RUT</th>
-                            <th className="p-4 font-semibold">Nombre completo</th>
-                            <th className="p-4 font-semibold">Apoderado</th>
-                            {/* Columna responsiva */}
-                            <th className="p-4 font-semibold hidden md:table-cell">Fecha Nac.</th>
-                            <th className="p-4 font-semibold text-right">Acciones</th>
+                            <th className="p-4 font-bold">RUN</th>
+                            <th className="p-4 font-bold">Párvulo</th>
+                            <th className="p-4 font-bold hidden lg:table-cell">Nivel</th>
+                            <th className="p-4 font-bold">Apoderado</th>
+                            <th className="p-4 font-bold hidden md:table-cell">Estado</th>
+                            <th className="p-4 font-bold text-right">Ficha</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y text-sm divide-gray-50">
+                    <tbody className="divide-y divide-gray-100">
                         {loading ? (
-                            <tr><td colSpan="5" className="p-10 text-center text-gray-400 italic">Cargando datos...</td></tr>
-                        ) : (filteredEstudiantes && filteredEstudiantes.length > 0) ? (
+                            <tr><td colSpan="6" className="p-10 text-center text-gray-400 italic font-medium">Sincronizando registros...</td></tr>
+                        ) : filteredEstudiantes.length > 0 ? (
                             filteredEstudiantes.map((est) => (
-                                <tr key={est.id} className="hover:bg-blue-50/50 transition-colors group">
-                                    <td className="p-4 font-medium text-gray-600">
-                                        {est.rut || "S/R"}
+                                <tr key={est.id} className="hover:bg-blue-50/30 transition-colors group">
+                                    <td className="p-4 font-medium text-gray-500 text-xs">{est.rut}</td>
+                                    <td className="p-4 font-bold text-gray-900">
+                                        {est.nombre} {est.apellido}
                                     </td>
-                                    <td className="p-4 font-semibold text-gray-900">
-                                        {`${est.nombre || ''} ${est.apellido || ''}`}
+                                    <td className="p-4 hidden lg:table-cell">
+                                        <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
+                                            {est.nivel || "No definido"}
+                                        </span>
                                     </td>
-                                    <td className="p-4 text-gray-600">
-                                        {est.nombreApoderado || "No asignado"}
+                                    <td className="p-4">
+                                        <div className="flex flex-col">
+                                            <span className="text-sm font-medium text-gray-700">{est.nombreApoderado}</span>
+                                            <span className="text-[10px] text-gray-400">{est.telefono}</span>
+                                        </div>
                                     </td>
-                                    {/* Se oculta igual que el header en móvil */}
-                                    <td className="p-4 text-gray-600 hidden md:table-cell">
-                                        {formatearFecha(est.fechaNacimiento) || "No asignado"}
+                                    <td className="p-4 hidden md:table-cell">
+                                        <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${est.estado === 'Vigente' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                                            }`}>
+                                            {est.estado || 'Vigente'}
+                                        </span>
                                     </td>
                                     <td className="p-4 text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <button className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors" title="Ver ficha">
-                                                <FileText size={18} />
-                                            </button>
-                                            {/* <button className="p-2 text-gray-400 hover:bg-gray-100 rounded-lg transition-colors">
-                                                <MoreVertical size={18} />
-                                            </button> */}
-                                        </div>
+                                        <button className="p-2 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm border border-blue-100">
+                                            <FileText size={18} />
+                                        </button>
                                     </td>
                                 </tr>
                             ))
                         ) : (
-                            <tr><td colSpan="5" className="p-10 text-center text-gray-400">No hay párvulos registrados aún.</td></tr>
+                            <tr><td colSpan="6" className="p-10 text-center text-gray-400">No se encontraron resultados para "{searchTerm}"</td></tr>
                         )}
                     </tbody>
                 </table>

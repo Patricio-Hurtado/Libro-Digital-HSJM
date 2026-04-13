@@ -112,10 +112,10 @@ const Layout = () => {
                   <img 
                     src={usuario.foto} 
                     alt={usuario.nombre}
-                    className="w-9 h-9 rounded-full object-cover border-2 border-blue-200 flex-shrink-0"
+                    className="w-9 h-9 rounded-full object-cover border-2 border-blue-200 shrink-0"
                   />
                 ) : (
-                  <UserCircle size={35} className="flex items-center justify-center text-lg flex-shrink-0" />
+                  <UserCircle size={35} className="flex items-center justify-center text-lg shrink-0" />
                 )}
                 <Camera 
                   size={14} 
