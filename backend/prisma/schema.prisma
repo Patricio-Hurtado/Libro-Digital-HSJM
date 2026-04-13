@@ -9,6 +9,13 @@ datasource db {
   //url      = env("DATABASE_URL")
 }
 
+// Agregamos este bloque para los estados de asistencia
+enum EstadoAsistencia {
+  P // Presente
+  A // Ausente
+  J // Justificado
+}
+
 // --- SEGURIDAD Y USUARIOS ---
 
 enum Role {
@@ -71,18 +78,26 @@ model Estudiante {
 // --- MÓDULO ASISTENCIA ---
 
 model Asistencia {
-  id           String   @id @default(uuid())
-  fecha        DateTime @default(now())
-  jornada      String   // "MAÑANA" o "TARDE"
-  presente     Boolean  @default(true)
+  id           String           @id @default(uuid())
+  fecha        DateTime         @default(now())
+  jornada      String           // "MAÑANA" o "TARDE"
   
+  // Cambio: Ahora usamos el Enum P, A, J
+  estado       EstadoAsistencia @default(P)
+  
+  // Nuevo: Para la validación del jefe de "cerrar la jornada"
+  cerrado      Boolean          @default(false)
+  
+  // Nuevo: Campo opcional para justificar la inasistencia
+  comentario   String?
+
   estudianteId String
-  estudiante   Estudiante @relation(fields: [estudianteId], references: [id])
+  estudiante   Estudiante       @relation(fields: [estudianteId], references: [id])
   
   usuarioId    String
-  registradoPor User      @relation("RegistradoPor", fields: [usuarioId], references: [id])
+  registradoPor User             @relation("RegistradoPor", fields: [usuarioId], references: [id])
 
-  @@unique([estudianteId, fecha, jornada]) // Evita duplicados el mismo día
+  @@unique([estudianteId, fecha, jornada]) 
 }
 
 // --- MÓDULO PEDAGÓGICO Y EVALUACIÓN ---
