@@ -47,32 +47,60 @@ model User {
 // --- MÓDULO IDENTIFICACIÓN (Ficha del Niño) ---
 
 model Estudiante {
-  id              String   @id @default(uuid())
-  rut             String   @unique
-  nombre          String
-  apellido        String
-  fechaNacimiento DateTime
-  direccion       String?
+  id                    String    @id @default(uuid())
   
-  // Antecedentes de Salud
-  tipoSangre      String?
-  alergias        String?
-  enfermedades    String?
-  medicamentos    String?
+  // Identificación
+  rut                   String    @unique
+  nombre                String
+  apellido              String
+  sexo                  String    // O puedes usar Enum (MASCULINO, FEMENINO)
+  fechaNacimiento       DateTime
+  nacionalidad          String    @default("Chilena")
 
-  // Datos del Apoderado
-  nombreApoderado String
-  rutApoderado    String
-  telefono        String
-  emailApoderado  String?
+  // Domicilio
+  direccion             String
+  comuna                String    @default("Melipilla")
+
+  // Salud
+  prevision             String?   // Fonasa, Isapre, etc.
+  tipoSangre            String?
+  alergias              String?
+  restriccionesAliment  String?
+  vacunasAlDia          Boolean   @default(true)
+
+  // Apoderados
+  nombreApoderado       String
+  rutApoderado          String
+  parentesco            String
+  telefono              String
+  emailApoderado        String?
+
+  // Situación de Matrícula
+  fechaIngreso          DateTime  @default(now())
+  nivel                 Nivel     // Usamos el Enum definido abajo
+  estado                Estado    @default(VIGENTE)
 
   // Relaciones
   asistencias     Asistencia[]
   observaciones   Observation[]
   evaluaciones    Evaluacion[]
 
+  // Auditoría básica
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// Enums para estandarizar opciones
+enum Nivel {
+  SALA_CUNA_MENOR
+  SALA_CUNA_MAYOR
+  NIVEL_MEDIO_MENOR
+  NIVEL_MEDIO_MAYOR
+}
+
+enum Estado {
+  VIGENTE
+  RETIRADO
 }
 
 // --- MÓDULO ASISTENCIA ---
