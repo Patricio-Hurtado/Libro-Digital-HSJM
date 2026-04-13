@@ -1,0 +1,146 @@
+// Configuración básica
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql" // O mysql según tu preferencia
+  //url      = env("DATABASE_URL")
+}
+
+// --- SEGURIDAD Y USUARIOS ---
+
+enum Role {
+  DIRECTORA
+  EDUCADORA
+  TECNICO
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  nombre    String
+  rut       String   @unique
+  role      Role     @default(EDUCADORA)
+  active    Boolean  @default(true)
+  fotoUrl   String?  // URL de la foto de perfil
+  
+  // Relaciones para trazabilidad
+  logs          AuditLog[]
+  observaciones Observation[]
+  asistencias   Asistencia[] @relation("RegistradoPor")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// --- MÓDULO IDENTIFICACIÓN (Ficha del Niño) ---
+
+model Estudiante {
+  id              String   @id @default(uuid())
+  rut             String   @unique
+  nombre          String
+  apellido        String
+  fechaNacimiento DateTime
+  direccion       String?
+  
+  // Antecedentes de Salud
+  tipoSangre      String?
+  alergias        String?
+  enfermedades    String?
+  medicamentos    String?
+
+  // Datos del Apoderado
+  nombreApoderado String
+  rutApoderado    String
+  telefono        String
+  emailApoderado  String?
+
+  // Relaciones
+  asistencias     Asistencia[]
+  observaciones   Observation[]
+  evaluaciones    Evaluacion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// --- MÓDULO ASISTENCIA ---
+
+model Asistencia {
+  id           String   @id @default(uuid())
+  fecha        DateTime @default(now())
+  jornada      String   // "MAÑANA" o "TARDE"
+  presente     Boolean  @default(true)
+  
+  estudianteId String
+  estudiante   Estudiante @relation(fields: [estudianteId], references: [id])
+  
+  usuarioId    String
+  registradoPor User      @relation("RegistradoPor", fields: [usuarioId], references: [id])
+
+  @@unique([estudianteId, fecha, jornada]) // Evita duplicados el mismo día
+}
+
+// --- MÓDULO PEDAGÓGICO Y EVALUACIÓN ---
+
+model Planificacion {
+  id          String   @id @default(uuid())
+  titulo      String
+  descripcion String
+  tipo        String   // Sectorial, Anual, Transversal
+  archivoUrl  String?  // Link al PDF/Doc en Cloudinary o AWS S3
+  fechaInicio DateTime
+  fechaFin    DateTime
+
+  createdAt DateTime @default(now())
+}
+
+model Evaluacion {
+  id           String   @id @default(uuid())
+  tipo         String   // Diagnóstico, Bitácora, Escala
+  resultado    Json     // Guardamos la escala o progreso como JSON flexible
+  comentario   String?
+  
+  estudianteId String
+  estudiante   Estudiante @relation(fields: [estudianteId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+// --- LIBRO DE VIDA (Anécdotas/Observaciones) ---
+
+model Observation {
+  id           String   @id @default(uuid())
+  contenido    String   @db.Text
+  tipo         String   // Positiva, Conductual, Salud
+  
+  estudianteId String
+  estudiante   Estudiante @relation(fields: [estudianteId], references: [id])
+  
+  autorId      String
+  autor        User       @relation(fields: [autorId], references: [id])
+
+  // Firma electrónica simple (podría ser un hash del registro)
+  signatureHash String? 
+
+  createdAt DateTime @default(now())
+}
+
+// --- SEGURIDAD: HUELLA DE AUDITORÍA (Audit Log) ---
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  accion    String   // "CREATE", "UPDATE", "DELETE"
+  tabla     String   // Ejemplo: "Asistencia"
+  registroId String  // El ID del registro afectado
+  detalles  Json?    // Datos anteriores vs nuevos
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}

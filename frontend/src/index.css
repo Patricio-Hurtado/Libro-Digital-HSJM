@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@layer components {
+  /* Botón principal */
+  .btn-primary {
+    @apply bg-blue-500 text-white px-4 py-2 rounded-lg font-bold 
+           hover:bg-blue-600 transition-all active:scale-95 
+           flex items-center justify-center gap-2 shadow-sm;
+  }
+
+  /* Contenedor del buscador */
+  .input-search-container {
+    @apply relative w-full md:w-1/3;
+  }
+  
+  /* Input de búsqueda */
+  .input-search {
+    @apply w-full p-2 pl-10 border border-gray-200 rounded-xl bg-gray-50 
+           focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none transition-all;
+  }
+
+  /* El contenedor blanco grande (Main Card) */
+  .main-card-container {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6 min-h-[40vh];
+  }
+
+  /* Las tarjetas de Info(salud, apoyo, cierre auto...etc) */
+  .info-card {
+    @apply border border-gray-100 rounded-2xl p-4 flex gap-4 items-center 
+           transition-shadow duration-200 hover:shadow-md cursor-pointer;
+  }
+
+  /* Input específico para formularios (borde completo) */
+  .form-input-container {
+    @apply relative w-full;
+  }
+  .form-input {
+    @apply w-full p-3 pl-11 border border-gray-200 rounded-xl bg-white 
+           focus:ring-2 focus:ring-blue-100 focus:border-blue-400 outline-none 
+           transition-all placeholder:text-gray-400 text-sm;
+  }
+
+  /* Estado de carga para botones */
+  .btn-loading {
+    @apply opacity-70 cursor-not-allowed pointer-events-none;
+  }
+
+  /* Mensajes de error formales */
+  .error-message {
+    @apply bg-red-50 text-red-700 border border-red-200 p-3 rounded-xl 
+           text-xs font-medium flex items-center gap-2 animate-shake;
+  }
+}
+
+  /* Animación opcional para el error (v4 style) */
+  @utility animate-shake {
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  @keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+    40%, 60% { transform: translate3d(3px, 0, 0); }
+  }
+  
