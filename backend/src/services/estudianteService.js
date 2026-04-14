@@ -52,3 +52,10 @@ export const listarEstudiantes = async () => {
     orderBy: { apellido: 'asc' }
   });
 };
+
+export const obtenerPorId = async (id) => {
+  // Solo lógica de base de datos
+  return await prisma.estudiante.findUnique({
+    where: { id: id }
+  });
+};

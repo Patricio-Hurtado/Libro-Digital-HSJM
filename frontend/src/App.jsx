@@ -8,6 +8,7 @@ import Planificacion from './pages/Planificacion.jsx';
 import Evaluacion from './pages/Evaluacion.jsx';
 import Anecdotas from './pages/Anecdotas.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import DetalleParvulo from './components/DetalleParvulo.jsx';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="evaluacion" element={<Evaluacion />} />
           <Route path="anecdotas" element={<Anecdotas />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="/identificacion/:id" element={<DetalleParvulo />} />
         </Route>
 
         {/* Captura cualquier ruta inexistente y manda al login o 404 */}

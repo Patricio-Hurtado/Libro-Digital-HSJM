@@ -112,9 +112,18 @@ const Identificacion = () => {
                                         </span>
                                     </td>
                                     <td className="p-4 text-right">
-                                        <button className="p-2 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm border border-blue-100">
-                                            <FileText size={18} />
-                                        </button>
+                                        <div className="flex justify-end gap-2">
+                                            {/* BOTÓN CONFIGURADO */}
+                                            <Link
+                                                to={`/identificacion/${est.id}`}
+                                                className="p-2 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm border border-blue-100 flex items-center justify-center"
+                                                title="Ver ficha completa"
+                                            >
+                                                <FileText size={18} />
+                                            </Link>
+
+                                            {/* Aquí podrías poner el botón de editar en el futuro */}
+                                        </div>
                                     </td>
                                 </tr>
                             ))

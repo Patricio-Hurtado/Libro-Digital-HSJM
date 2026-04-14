@@ -27,6 +27,7 @@ import * as authController from './controllers/authController.js';
 import * as estudianteController from './controllers/estudianteController.js';
 import * as uploadController from './controllers/uploadController.js';
 import { upload } from './config/multer.js';
+import estudianteRoutes from './routes/estudiantesRoutes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -47,9 +48,7 @@ app.post('/api/upload/profile', upload.single('photo'), uploadController.uploadP
 app.put('/api/upload/profile/:userId', uploadController.updateProfilePhoto);
 
 // --- RUTAS DE ESTUDIANTES ---
-// Delegamos la lógica al controlador
-app.post('/api/estudiantes', estudianteController.createEstudiante);
-app.get('/api/estudiantes', estudianteController.getAllEstudiantes);
+app.use('/api/estudiantes', estudianteRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
