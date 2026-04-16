@@ -179,44 +179,7 @@ model Asistencia {
   @@unique([estudianteId, fecha, jornada]) 
 }
 
-// --- MÓDULO PEDAGÓGICO Y EVALUACIÓN (INCLUYE LA NUEVA BITÁCORA) ---
-
-// NUEVO ENUM: Para obligar a que las notas sean solo estas tres opciones
-enum CalificacionBitacora {
-  L   // Logrado
-  ED  // En Desarrollo
-  NO  // No Observado
-}
-
-// NUEVO: Modelo para la información general de la clase/actividad
-model Bitacora {
-  id                String   @id @default(uuid())
-  fecha             DateTime
-  ambito            String   // Ej: "Desarrollo personal"
-  nucleo            String   // Ej: "Identidad"
-  descripcionOA     String   // El cuadro de texto
-  
-  // Relación: Una bitácora tiene muchas evaluaciones (una por niño)
-  evaluaciones      EvaluacionBitacora[]
-  
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
-
-// NUEVO: Modelo para la nota individual de cada niño en esa clase
-model EvaluacionBitacora {
-  id            String               @id @default(uuid())
-  calificacion  CalificacionBitacora 
-  
-  bitacoraId    String
-  bitacora      Bitacora             @relation(fields: [bitacoraId], references: [id], onDelete: Cascade)
-  
-  estudianteId  String
-  estudiante    Estudiante           @relation(fields: [estudianteId], references: [id], onDelete: Cascade)
-
-  // Evita que la profe evalúe dos veces al mismo niño en la misma bitácora
-  @@unique([bitacoraId, estudianteId])
-}
+// --- MÓDULO PEDAGÓGICO Y EVALUACIÓN ---
 
 model Planificacion {
   id          String   @id @default(uuid())
