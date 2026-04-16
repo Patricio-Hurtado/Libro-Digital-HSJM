@@ -1,20 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileCheck, Users, CheckCircle2, Info, AlertTriangle, Sun, Moon } from 'lucide-react';
+import { getEstudiantes } from '../services/estudianteService';
 
 const Asistencia = () => {
   const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
-  const [nivelSeleccionado, setNivelSeleccionado] = useState('SALA CUNA MENOR');
+  
+  // 1. Nivel inicial configurado con el ID de la base de datos
+  const [nivelSeleccionado, setNivelSeleccionado] = useState('SALA_CUNA_MENOR');
   
   // Detecta automáticamente la jornada según la hora
   const [jornadaVista, setJornadaVista] = useState(new Date().getHours() < 14 ? 'manana' : 'tarde');
 
-  const niveles = ['SALA CUNA MENOR', 'SALA CUNA MAYOR', 'MEDIO MENOR', 'MEDIO MAYOR'];
+  // 2. Estado de carga y datos vacíos al inicio (esperando al servidor)
+  const [loading, setLoading] = useState(true);
+  const [parvulos, setParvulos] = useState([]);
 
-  const [parvulos, setParvulos] = useState([
-    { id: 1, rut: '25.123.456-7', nombre: 'Sofía Valentina Flores Pérez', nivel: 'SALA CUNA MENOR', manana: 'P', tarde: 'P', porcentaje: 92 },
-    { id: 2, rut: '25.888.777-k', nombre: 'Tomás Andrés Vargas Soto', nivel: 'SALA CUNA MENOR', manana: 'A', tarde: 'J', porcentaje: 85 },
-    { id: 3, rut: '26.111.222-3', nombre: 'Martina Ignacia Flores Pérez', nivel: 'SALA CUNA MENOR', manana: 'P', tarde: 'A', porcentaje: 78 },
-  ]);
+  // 3. Arreglo de niveles adaptado: 'id' para la lógica, 'label' para lo visual
+  const niveles = [
+    { id: 'SALA_CUNA_MENOR', label: 'SALA CUNA MENOR' },
+    { id: 'SALA_CUNA_MAYOR', label: 'SALA CUNA MAYOR' },
+    { id: 'NIVEL_MEDIO_MENOR', label: 'MEDIO MENOR' },
+    { id: 'NIVEL_MEDIO_MAYOR', label: 'MEDIO MAYOR' }
+  ];
+
+  // 4. El useEffect que hace la magia de ir a buscar los datos
+  useEffect(() => {
+    const cargarDatos = async () => {
+      try {
+        const data = await getEstudiantes();
+        
+        // Adaptamos la respuesta de la BD para que tu tabla la entienda
+        const datosAdaptados = data.map(nino => ({
+          id: nino.id,
+          rut: nino.rut,
+          nombre: `${nino.nombre} ${nino.apellido}`, 
+          nivel: nino.nivel, 
+          manana: '-', // Estado inicial
+          tarde: '-',  // Estado inicial
+          porcentaje: 100 // Dato estático por ahora
+        }));
+
+        setParvulos(datosAdaptados);
+      } catch (error) {
+        console.error("Error al cargar estudiantes del HSJM:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargarDatos();
+  }, []);
 
   // --- LÓGICA DE CÁLCULOS ---
   const parvulosNivel = parvulos.filter(p => p.nivel === nivelSeleccionado);
@@ -27,6 +61,11 @@ const Asistencia = () => {
   const actualizarAsistencia = (id, jornada, nuevoEstado) => {
     setParvulos(prev => prev.map(p => p.id === id ? { ...p, [jornada]: nuevoEstado } : p));
   };
+
+  // Pantalla de carga mientras se obtienen los datos
+  if (loading) {
+    return <div className="flex justify-center items-center h-64 text-gray-500 font-bold">Cargando registros del Hospital...</div>;
+  }
 
   return (
     <div className="animate-in fade-in duration-500">
@@ -75,7 +114,6 @@ const Asistencia = () => {
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Justificados (J)</p>
             <div className="flex items-center gap-2">
               <span className="text-2xl font-black text-gray-800">{justificadosEnJornada}</span>
-              <span className="text-amber-600 text-[10px] font-bold italic ml-1 font-medium">Por revisar</span>
             </div>
           </div>
         </div>
@@ -90,7 +128,7 @@ const Asistencia = () => {
         </p>
       </div>
 
-      {/* SELECTOR DE JORNADA - Nuevo pero con estilo "HSJM" */}
+      {/* SELECTOR DE JORNADA */}
       <div className="flex gap-4 mb-6">
         <button 
           onClick={() => setJornadaVista('manana')}
@@ -108,21 +146,21 @@ const Asistencia = () => {
         </button>
       </div>
 
-      {/* TABS DE NIVELES */}
+      {/* TABS DE NIVELES (Actualizado con IDs) */}
       <div className="flex border-b border-gray-200 mb-8 overflow-x-auto bg-white rounded-t-2xl px-4 font-bold">
         {niveles.map(n => (
           <button
-            key={n}
-            onClick={() => setNivelSeleccionado(n)}
+            key={n.id}
+            onClick={() => setNivelSeleccionado(n.id)}
             className={`px-6 py-4 text-xs font-bold transition-all border-b-2 whitespace-nowrap
-              ${nivelSeleccionado === n ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
+              ${nivelSeleccionado === n.id ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
           >
-            {n}
+            {n.label}
           </button>
         ))}
       </div>
 
-      {/* TABLA ÚNICA - Recuperando el diseño de filas exacto */}
+      {/* TABLA ÚNICA */}
       <div className="bg-white rounded-b-2xl shadow-sm border border-gray-100 overflow-hidden">
         <table className="w-full text-left">
           <thead className="text-[10px] font-bold text-gray-400 uppercase tracking-widest border-b border-gray-50 bg-gray-50/50">
@@ -133,39 +171,47 @@ const Asistencia = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {parvulosNivel.map((p) => (
-              <tr key={p.id} className="hover:bg-gray-50/30 transition-colors">
-                <td className="p-5">
-                  <div className="font-bold text-gray-900 text-sm">{p.nombre}</div>
-                  <div className="text-[12px] text-gray-400 font-bold">{p.rut}</div>
-                </td>
-                <td className="p-5">
-                  <div className="flex gap-1 justify-center">
-                    {['P', 'A', 'J'].map(estado => (
-                      <button
-                        key={estado}
-                        onClick={() => actualizarAsistencia(p.id, jornadaVista, estado)}
-                        className={`w-10 h-10 rounded-xl font-bold text-white text-xs transition-all shadow-sm
-                          ${p[jornadaVista] === estado 
-                            ? (estado === 'P' ? 'bg-green-500' : estado === 'A' ? 'bg-red-500' : 'bg-amber-500') 
-                            : 'bg-gray-100 text-gray-300 hover:bg-gray-200'}
-                          hover:scale-105 active:scale-95`}
-                      >
-                        {estado}
-                      </button>
-                    ))}
-                  </div>
-                </td>
-                <td className="p-5 hidden md:table-cell">
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="w-24 bg-gray-100 h-1.5 rounded-full overflow-hidden">
-                      <div className={`h-full ${p.porcentaje < 85 ? 'bg-red-500' : 'bg-blue-500'}`} style={{ width: `${p.porcentaje}%` }}></div>
-                    </div>
-                    <span className="text-[10px] font-bold text-gray-500">{p.porcentaje}%</span>
-                  </div>
+            {parvulosNivel.length === 0 ? (
+              <tr>
+                <td colSpan="3" className="p-8 text-center text-gray-500 font-medium">
+                  No hay párvulos matriculados en este nivel todavía.
                 </td>
               </tr>
-            ))}
+            ) : (
+              parvulosNivel.map((p) => (
+                <tr key={p.id} className="hover:bg-gray-50/30 transition-colors">
+                  <td className="p-5">
+                    <div className="font-bold text-gray-900 text-sm">{p.nombre}</div>
+                    <div className="text-[12px] text-gray-400 font-bold">{p.rut}</div>
+                  </td>
+                  <td className="p-5">
+                    <div className="flex gap-1 justify-center">
+                      {['P', 'A', 'J'].map(estado => (
+                        <button
+                          key={estado}
+                          onClick={() => actualizarAsistencia(p.id, jornadaVista, estado)}
+                          className={`w-10 h-10 rounded-xl font-bold text-white text-xs transition-all shadow-sm
+                            ${p[jornadaVista] === estado 
+                              ? (estado === 'P' ? 'bg-green-500' : estado === 'A' ? 'bg-red-500' : 'bg-amber-500') 
+                              : 'bg-gray-100 text-gray-300 hover:bg-gray-200'}
+                            hover:scale-105 active:scale-95`}
+                        >
+                          {estado}
+                        </button>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="p-5 hidden md:table-cell">
+                    <div className="flex items-center justify-center gap-4">
+                      <div className="w-32 bg-gray-100 h-3 rounded-full overflow-hidden">
+                        <div className={`h-full ${p.porcentaje < 85 ? 'bg-red-500' : 'bg-blue-500'}`} style={{ width: `${p.porcentaje}%` }}></div>
+                      </div>
+                      <span className="text-sm font-bold text-gray-700 w-10">{p.porcentaje}%</span>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

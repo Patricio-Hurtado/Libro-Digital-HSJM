@@ -59,9 +59,12 @@ const Layout = () => {
     { name: 'Identificación', icon: <UserCheck size={20} />, path: '/identificacion' },
     { name: 'Asistencia diaria', icon: <Calendar size={20} />, path: '/asistencia' },
     { name: 'Planificación', icon: <ClipboardList size={20} />, path: '/planificacion' },
+    { name: 'Bitacora', icon: <ClipboardList size={20} />, path: '/bitacora' },
     { name: 'Evaluación', icon: <BarChart3 size={20} />, path: '/evaluacion' },
+    { name: 'PautaEvaluación', icon: <BarChart3 size={20} />, path: '/pauta-evaluacion' },
     { name: 'Anécdotas y vida', icon: <BookOpen size={20} />, path: '/anecdotas' },
     { name: 'Dashboard', icon: <BarChart3 size={20} />, path: '/dashboard' },
+    { name: 'PanelDirectivo', icon: <BarChart3 size={20} />, path: '/panel-directivo' },
   ];
 
   return (

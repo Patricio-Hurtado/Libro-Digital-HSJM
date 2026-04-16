@@ -27,6 +27,8 @@ import * as authController from './controllers/authController.js';
 import * as estudianteController from './controllers/estudianteController.js';
 import * as uploadController from './controllers/uploadController.js';
 import { upload } from './config/multer.js';
+import bitacoraRoutes from './routes/bitacora.routes.js';
+import evaluacionRoutes from './routes/evaluacion.routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -50,6 +52,8 @@ app.put('/api/upload/profile/:userId', uploadController.updateProfilePhoto);
 // Delegamos la lógica al controlador
 app.post('/api/estudiantes', estudianteController.createEstudiante);
 app.get('/api/estudiantes', estudianteController.getAllEstudiantes);
+app.use('/api/bitacoras', bitacoraRoutes);
+app.use('/api/evaluaciones', evaluacionRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);

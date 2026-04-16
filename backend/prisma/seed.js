@@ -265,6 +265,28 @@ async function main() {
       emailApoderado: 'ana@mail.com',
       nivel: 'NIVEL_MEDIO_MAYOR',
       estado: 'VIGENTE'
+    },
+    {
+      rut: '25.019.019-9',
+      nombre: 'Camila antonia',
+      apellido: 'perez lopez',
+      sexo: 'Femenino',
+      fechaNacimiento: new Date('2020-09-10'),  
+      nacionalidad: 'Chilena',
+      direccion: 'Calle 2da 7',
+      comuna: 'Melipilla',
+      prevision: 'Fonasa',
+      tipoSangre: 'A+',
+      alergias: 'Lactosa',  
+      restriccionesAliment: 'Ninguna',
+      vacunasAlDia: true,
+      nombreApoderado: 'Juan López',
+      rutApoderado: '16.554.443-2',
+      parentesco: 'Padre',
+      telefono: '+56977778888',
+      emailApoderado: 'juan@mail.com',
+      nivel: 'SALA_CUNA_MAYOR',
+      estado: 'VIGENTE'
     }
   ];
 
