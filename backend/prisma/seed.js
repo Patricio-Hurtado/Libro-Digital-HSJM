@@ -1,4 +1,5 @@
 // backend/prisma/seed.js
+import 'dotenv/config';
 import pkg from '@prisma/client';
 const { PrismaClient } = pkg;
 import { PrismaPg } from '@prisma/adapter-pg';
@@ -13,16 +14,69 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log('🌱 Iniciando poblamiento masivo de EduBook...');
 
-  // 1. LIMPIEZA TOTAL
+  // 1. LIMPIEZA TOTAL (En orden de dependencia)
+  await prisma.estudianteApoderado.deleteMany();
   await prisma.auditLog.deleteMany();
   await prisma.observation.deleteMany();
   await prisma.evaluacion.deleteMany();
   await prisma.asistencia.deleteMany();
   await prisma.planificacion.deleteMany();
   await prisma.estudiante.deleteMany();
+  await prisma.apoderado.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.comuna.deleteMany();
+  await prisma.nivel.deleteMany();
+  await prisma.sexo.deleteMany();
+  await prisma.grupoSanguineo.deleteMany();
+  await prisma.nacionalidad.deleteMany();
 
-  // 1. Generamos el hash una sola vez para usarlo en todos los usuarios de prueba
+  // 2. CREAR TABLAS MAESTRAS (Necesarias para los IDs)
+  console.log('🏗️ Creando tablas maestras...');
+  
+  const comunas = {
+    'Melipilla': await prisma.comuna.create({ data: { comuna: 'Melipilla' } }),
+    'Pomaire': await prisma.comuna.create({ data: { comuna: 'Pomaire' } }),
+    'Curacaví': await prisma.comuna.create({ data: { comuna: 'Curacaví' } }),
+    'Alhué': await prisma.comuna.create({ data: { comuna: 'Alhué' } }),
+    'San Pedro': await prisma.comuna.create({ data: { comuna: 'San Pedro' } })
+  };
+
+  const niveles = {
+    'SCM': await prisma.nivel.create({ data: { nivel: 'Sala Cuna Menor' } }),
+    'SCMY': await prisma.nivel.create({ data: { nivel: 'Sala Cuna Mayor' } }),
+    'NMM': await prisma.nivel.create({ data: { nivel: 'Nivel Medio Menor' } }),
+    'NMY': await prisma.nivel.create({ data: { nivel: 'Nivel Medio Mayor' } }),
+  };
+
+  const sexos = {
+    'Masculino': await prisma.sexo.create({ data: { genero: 'Masculino' } }),
+    'Femenino': await prisma.sexo.create({ data: { genero: 'Femenino' } })
+  };
+
+  const gruposSangre = {
+    'O RhD+': await prisma.grupoSanguineo.create({ data: { grupo: 'O RhD+' } }),
+    'A RhD+': await prisma.grupoSanguineo.create({ data: { grupo: 'A RhD+' } }),
+    'B RhD+': await prisma.grupoSanguineo.create({ data: { grupo: 'B RhD+' } }),
+    'AB RhD+': await prisma.grupoSanguineo.create({ data: { grupo: 'AB RHD+' } }),
+    'O RhD-': await prisma.grupoSanguineo.create({ data: { grupo: 'O RhD-' } }),
+    'A RhD-': await prisma.grupoSanguineo.create({ data: { grupo: 'A RhD-' } }),
+    'B RhD-': await prisma.grupoSanguineo.create({ data: { grupo: 'B RhD-' } }),
+    'AB RhD-': await prisma.grupoSanguineo.create({ data: { grupo: 'AB RhD-' } }),
+  };
+
+  const nacionalidades = {
+    'Chilena': await prisma.nacionalidad.create({ data: { nacionalidad: 'Chilena' } }),
+    'Argentina': await prisma.nacionalidad.create({ data: { nacionalidad: 'Argentina' } }),
+    'Peruana': await prisma.nacionalidad.create({ data: { nacionalidad: 'Peruana' } }),
+    'Boliviana': await prisma.nacionalidad.create({ data: { nacionalidad: 'Boliviana' } }),
+    'Colombiana': await prisma.nacionalidad.create({ data: { nacionalidad: 'Colombiana' } }),
+    'Venezolana': await prisma.nacionalidad.create({ data: { nacionalidad: 'Venezolana' } }),
+    'Haitiana': await prisma.nacionalidad.create({ data: { nacionalidad: 'Haitiana' } }),
+    'Otra': await prisma.nacionalidad.create({ data: { nacionalidad: 'Otra' } }),
+  };
+
+
+  // 3. CREAR USUARIOS Generamos el hash una sola vez para usarlo en todos los usuarios de prueba
   const saltRounds = 10;
   const hashedDefaultPassword = await bcrypt.hash('password123', saltRounds);
 
@@ -44,260 +98,130 @@ async function main() {
   
   console.log('✅ 4 Usuarios creados con contraseñas hasheadas correctamente.');
 
-  // 3. CREAR 10 ESTUDIANTES (Con las 10 columnas de datos)
-  const dataEstudiantes = [
+  // 4. DATA DE ESTUDIANTES (Mapeada a la nueva estructura)
+  const estudiantesRaw = [
     {
-      rut: '25.001.001-1',
-      nombre: 'Sofía Valentina',
-      apellido: 'Flores Pérez',
-      sexo: 'Femenino',
-      fechaNacimiento: new Date('2021-05-15'),
-      nacionalidad: 'Chilena',
-      direccion: 'Av. Las Torres 123',
-      comuna: 'Melipilla',
-      prevision: 'Fonasa',
-      tipoSangre: 'A+',
-      alergias: 'Polen',
-      restriccionesAliment: 'Ninguna',
-      vacunasAlDia: true,
-      nombreApoderado: 'Loreto Pérez',
-      rutApoderado: '15.999.888-7',
-      parentesco: 'Madre',
-      telefono: '+56911112222',
-      emailApoderado: 'loreto@mail.com',
-      nivel: 'NIVEL_MEDIO_MAYOR',
-      estado: 'VIGENTE'
+      rut: '25.001.001-1', nombre: 'Sofía Valentina', apellido: 'Flores Pérez', sexo: 'Femenino', nacionalidad: 'Chilena',
+      fechaNacimiento: new Date('2021-05-15'), direccion: 'Av. Las Torres 123', comuna: 'Melipilla',
+      tipoSangre: 'A RhD+', nivel: 'NMY', apoderado: {
+        nombre: 'Loreto Pérez', rut: '15.999.888-7', parentesco: 'MADRE'
+      }
     },
     {
-      rut: '25.002.002-2',
-      nombre: 'Tomás Andrés',
-      apellido: 'Vargas Soto',
-      sexo: 'Masculino',
-      fechaNacimiento: new Date('2021-02-20'),
-      nacionalidad: 'Chilena',
-      direccion: 'Calle Pomaire 45',
-      comuna: 'Melipilla',
-      prevision: 'Isapre',
-      tipoSangre: 'O+',
-      alergias: 'Nueces',
-      restriccionesAliment: 'Sin sal',
-      vacunasAlDia: true,
-      nombreApoderado: 'Andrés Vargas',
-      rutApoderado: '14.777.666-5',
-      parentesco: 'Padre',
-      telefono: '+56933334444',
-      emailApoderado: 'andres@mail.com',
-      nivel: 'NIVEL_MEDIO_MENOR',
-      estado: 'VIGENTE'
+      rut: '25.002.002-2', nombre: 'Tomás Andrés', apellido: 'Vargas Soto', sexo: 'Masculino', nacionalidad: 'Argentina',
+      fechaNacimiento: new Date('2021-02-20'), direccion: 'Calle Pomaire 45', comuna: 'Melipilla',
+      tipoSangre: 'O RhD+', nivel: 'NMM', apoderado: {
+        nombre: 'Andrés Vargas', rut: '14.777.666-5', parentesco: 'PADRE'
+      }
     },
     {
-      rut: '25.003.003-3',
-      nombre: 'Valentina Sofía',
-      apellido: 'Gómez Rojas',
-      sexo: 'Femenino',
-      fechaNacimiento: new Date('2021-08-10'),
-      nacionalidad: 'Chilena',
-      direccion: 'Calle Principal 789',
-      comuna: 'Melipilla',
-      prevision: 'Fonasa',
-      tipoSangre: 'B-',
-      alergias: 'Lactosa',
-      restriccionesAliment: 'Ninguna',
-      vacunasAlDia: true,
-      nombreApoderado: 'María Gómez',
-      rutApoderado: '13.555.444-3',
-      parentesco: 'Madre',
-      telefono: '+56955556666',
-      emailApoderado: 'maria@mail.com',
-      nivel: 'NIVEL_MEDIO_MAYOR',
-      estado: 'VIGENTE'
+      rut: '25.003.003-3', nombre: 'Isabella Camila', apellido: 'González Rojas', sexo: 'Femenino',  nacionalidad: 'Peruana',
+      fechaNacimiento: new Date('2020-11-10'), direccion: 'Pasaje Los Pinos 789', comuna: 'Pomaire',
+      tipoSangre: 'B RhD-', nivel: 'NMY', apoderado: {
+        nombre: 'María Rojas', rut: '13.555.444-3', parentesco: 'ABUELA_O'
+      }
     },
     {
-      rut: '25.004.004-4',
-      nombre: 'Matías Alejandro',
-      apellido: 'López Fernández',
-      sexo: 'Masculino',
-      fechaNacimiento: new Date('2021-11-05'),
-      nacionalidad: 'Chilena',
-      direccion: 'Av. Los Pinos 321',
-      comuna: 'Melipilla',
-      prevision: 'Isapre',
-      tipoSangre: 'AB+',
-      alergias: 'Penicilina',
-      restriccionesAliment: 'Ninguna',
-      vacunasAlDia: true,
-      nombreApoderado: 'Carlos López',
-      rutApoderado: '16.444.333-2',
-      parentesco: 'Padre',
-      telefono: '+56977778888',
-      emailApoderado: 'carlos@mail.com',
-      nivel: 'NIVEL_MEDIO_MENOR',
-      estado: 'VIGENTE'
+      rut: '25.004.004-4', nombre: 'Matías Sebastián', apellido: 'López Díaz', sexo: 'Masculino', nacionalidad: 'Boliviana',
+      fechaNacimiento: new Date('2021-08-05'), direccion: 'Avenida Central 456', comuna: 'Melipilla',
+      tipoSangre: 'AB RhD+', nivel: 'NMM', apoderado: {
+        nombre: 'Carlos Díaz', rut: '12.444.333-2', parentesco: 'TIA_O'
+      }
     },
     {
-      rut: '25.005.005-5',
-      nombre: 'Isidora Emilia',
-      apellido: 'Martínez Díaz',
-      sexo: 'Femenino',
-      fechaNacimiento: new Date('2021-03-25'),
-      nacionalidad: 'Chilena',
-      direccion: 'Calle Principal 789',
-      comuna: 'Melipilla',
-      prevision: 'Fonasa',
-      tipoSangre: 'A-',
-      alergias: 'Huevos',
-      restriccionesAliment: 'Ninguna',
-      vacunasAlDia: true,
-      nombreApoderado: 'Ana Martínez',
-      rutApoderado: '17.333.222-1',
-      parentesco: 'Madre',
-      telefono: '+56999990000',
-      emailApoderado: 'ana@mail.com',
-      nivel: 'NIVEL_MEDIO_MAYOR',
-      estado: 'VIGENTE'
+      rut: '25.005.005-5', nombre: 'Valentina Sofía', apellido: 'Martínez Gómez', sexo: 'Femenino', nacionalidad: 'Colombiana',
+      fechaNacimiento: new Date('2021-01-25'), direccion: 'Calle Principal 789', comuna: 'Melipilla',
+      tipoSangre: 'O RhD-', nivel: 'NMY', apoderado: {
+        nombre: 'Luis Gómez', rut: '11.333.222-1', parentesco: 'HERMANA_O'
+      }
+      },
+    {
+      rut: '25.006.006-6', nombre: 'Agustina María', apellido: 'Fernández Ruiz', sexo: 'Femenino', nacionalidad: 'Venezolana',
+      fechaNacimiento: new Date('2020-12-30'), direccion: 'Pasaje Los Álamos 321', comuna: 'Pomaire',
+      tipoSangre: 'A RhD-', nivel: 'NMM', apoderado: {
+        nombre: 'Ana Ruiz', rut: '10.222.111-0', parentesco: 'OTRO'
+      }
     },
     {
-      rut: '25.006.006-6',  
-      nombre: 'Benjamín Nicolás',
-      apellido: 'Rojas Silva',
-      sexo: 'Masculino',
-      fechaNacimiento: new Date('2021-07-30'),
-      nacionalidad: 'Chilena',
-      direccion: 'Av. Las Torres 123',
-      comuna: 'Melipilla',
-      prevision: 'Isapre',
-      tipoSangre: 'O-',
-      alergias: 'Gluten',
-      restriccionesAliment: 'Sin azúcar',
-      vacunasAlDia: true,
-      nombreApoderado: 'Sofía Silva',
-      rutApoderado: '18.222.111-0',
-      parentesco: 'Madre',
-      telefono: '+56911112222',
-      emailApoderado: 'sofia@mail.com',
-      nivel: 'NIVEL_MEDIO_MENOR',
-      estado: 'VIGENTE'
+      rut: '25.007.007-7', nombre: 'Benjamín Alejandro', apellido: 'Sánchez Torres', sexo: 'Masculino', nacionalidad: 'Haitiana',
+      fechaNacimiento: new Date('2021-03-15'), direccion: 'Av. Libertador 456', comuna: 'Melipilla',
+      tipoSangre: 'B RhD-', nivel: 'NMY', apoderado: {
+        nombre: 'Roberto Torres', rut: '9.111.000-9', parentesco: 'MADRE'
+      }
     },
     {
-      rut: '25.007.007-7',
-      nombre: 'Agustina María',
-      apellido: 'Fernández Torres',
-      sexo: 'Femenino',
-      fechaNacimiento: new Date('2021-12-15'),
-      nacionalidad: 'Chilena',
-      direccion: 'Calle Pomaire 45',
-      comuna: 'Melipilla',
-      prevision: 'Fonasa',
-      tipoSangre: 'B+',
-      alergias: 'Mariscos',
-      restriccionesAliment: 'Ninguna', 
-      vacunasAlDia: true,
-      nombreApoderado: 'Ricardo Fernández',
-      rutApoderado: '19.111.000-9',
-      parentesco: 'Padre',
-      telefono: '+56933334444',
-      emailApoderado: 'ricardo@mail.com',
-      nivel: 'NIVEL_MEDIO_MAYOR',
-      estado: 'VIGENTE'
+      rut: '25.008.008-8', nombre: 'Camila Fernanda', apellido: 'Gómez Herrera', sexo: 'Femenino', nacionalidad: 'Otra',
+      fechaNacimiento: new Date('2021-06-20'), direccion: 'Calle Principal 101', comuna: 'Melipilla',
+      tipoSangre: 'O RhD+', nivel: 'NMM', apoderado: {
+        nombre: 'Elena Herrera', rut: '8.000.999-8', parentesco: 'PADRE'
+      }
     },
     {
-      rut: '25.008.008-8',
-      nombre: 'Diego Sebastián',
-      apellido: 'Gómez Rojas',
-      sexo: 'Masculino',
-      fechaNacimiento: new Date('2021-05-20'),
-      nacionalidad: 'Chilena',
-      direccion: 'Av. Los Pinos 321',
-      comuna: 'Melipilla',
-      prevision: 'Isapre',
-      tipoSangre: 'AB-',
-      alergias: 'Penicilina',
-      restriccionesAliment: 'Ninguna',
-      vacunasAlDia: true,
-      nombreApoderado: 'María Gómez',
-      rutApoderado: '13.555.444-3',
-      parentesco: 'Madre',
-      telefono: '+56955556666',
-      emailApoderado: 'maria@mail.com',
-      nivel: 'NIVEL_MEDIO_MENOR',
-      estado: 'VIGENTE'
+      rut: '25.009.009-9', nombre: 'Diego Nicolás', apellido: 'Ramírez Castillo', sexo: 'Masculino', nacionalidad: 'Chilena',
+      fechaNacimiento: new Date('2020-10-05'), direccion: 'Pasaje Los Robles 654', comuna: 'Pomaire',
+      tipoSangre: 'AB RhD-', nivel: 'NMY', apoderado: {
+        nombre: 'Sofía Castillo', rut: '7.999.888-7', parentesco: 'ABUELA_O'   
+      }
     },
     {
-      rut: '25.009.009-9',
-      nombre: 'Camila Fernanda',
-      apellido: 'López Martínez',
-      sexo: 'Femenino',
-      fechaNacimiento: new Date('2021-09-10'),  
-      nacionalidad: 'Chilena',
-      direccion: 'Calle Principal 789',
-      comuna: 'Melipilla',
-      prevision: 'Fonasa',
-      tipoSangre: 'A+',
-      alergias: 'Lactosa',  
-      restriccionesAliment: 'Ninguna',
-      vacunasAlDia: true,
-      nombreApoderado: 'Carlos López',
-      rutApoderado: '16.444.333-2',
-      parentesco: 'Padre',
-      telefono: '+56977778888',
-      emailApoderado: 'carlos@mail.com',
-      nivel: 'NIVEL_MEDIO_MAYOR',
-      estado: 'VIGENTE'
-    },
-    {
-      rut: '25.010.010-0',
-      nombre: 'Lucas Gabriel',
-      apellido: 'Martínez Díaz',
-      sexo: 'Masculino',
-      fechaNacimiento: new Date('2021-04-25'),
-      nacionalidad: 'Chilena',
-      direccion: 'Av. Las Torres 123',
-      comuna: 'Melipilla',
-      prevision: 'Isapre',
-      tipoSangre: 'O+',
-      alergias: 'Gluten',
-      restriccionesAliment: 'Sin azúcar',
-      vacunasAlDia: true,
-      nombreApoderado: 'Ana Martínez',
-      rutApoderado: '17.333.222-1',
-      parentesco: 'Madre',
-      telefono: '+56999990000',
-      emailApoderado: 'ana@mail.com',
-      nivel: 'NIVEL_MEDIO_MAYOR',
-      estado: 'VIGENTE'
+      rut: '25.010.010-0', nombre: 'Lucía Andrea', apellido: 'Morales Vega', sexo: 'Femenino', nacionalidad: 'Chilena',
+      fechaNacimiento: new Date('2021-04-12'), direccion: 'Avenida Principal 789', comuna: 'Melipilla',
+      tipoSangre: 'B RhD-', nivel: 'NMY', apoderado: {
+        nombre: 'Carlos Vega', rut: '6.888.777-6', parentesco: 'TIA_O'
+      }
     }
   ];
 
-  for (const est of dataEstudiantes) {
-    await prisma.estudiante.create({ data: est });
-  }
-  console.log('✅ 10 Estudiantes creados con su ficha técnica completa.');
+  console.log('👶 Creando Estudiantes, Apoderados y Relaciones...');
 
-  // 4. CREAR ASISTENCIAS INICIALES (Mañana)
-  const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0);
+  for (const e of estudiantesRaw) {
+  const apoderado = await prisma.apoderado.upsert({
+    where: { rutApoderado: e.apoderado.rut },
+    update: {},
+    create: {
+      nombreApoderado: e.apoderado.nombre,
+      rutApoderado: e.apoderado.rut,
+      telefono: '+56900000000',
+      emailApoderado: 'contacto@mail.com'
+    }
+  });
 
-  for (const est of dataEstudiantes) {
-    await prisma.asistencia.create({
-      data: {
-        fecha: hoy,
-        jornada: 'MAÑANA',
-        presente: true,
-        estudiante: { connect: { rut: est.rut } },
-        registradoPor: { connect: { rut: '12.345.678-9' } } // Marta
-      }
-    });
-  }
+  const estudiante = await prisma.estudiante.create({
+    data: {
+      rut: e.rut,
+      nombre: e.nombre,
+      apellido: e.apellido,
+      fechaNacimiento: e.fechaNacimiento,
+      direccion: e.direccion,
+      vacunasAlDia: true,
+      // Agregamos estos para evitar errores de campos vacíos
+      prevision: 'Fonasa', 
+      fechaIngreso: new Date(), 
+      
+      // Conexiones por ID
+      sexoId: sexos[e.sexo].id,
+      comunaId: comunas[e.comuna].id,
+      nivelId: niveles[e.nivel].id,
+      tipoSangreId: gruposSangre[e.tipoSangre].id,  
+      nacionalidadId: nacionalidades[e.nacionalidad].id
+    }
+  });
 
-  console.log('✅ Asistencia de la mañana registrada para los 10 niños.');
-  console.log('🚀 Base de datos poblada al 100%.');
+  await prisma.estudianteApoderado.create({
+    data: {
+      estudianteId: estudiante.id,
+      apoderadoId: apoderado.id,
+      tipoApoderado: 'TITULAR',
+      parentesco: e.apoderado.parentesco, // Asegúrate que sea MADRE, PADRE, TUTOR, ABUELO u OTRO
+      prioridad: 1
+    }
+  });
+}
+
+  console.log('✅ Estudiantes y Apoderados vinculados correctamente.');
+  console.log('🚀 Sembrado relacional finalizado.');
 }
 
 main()
-  .catch((e) => {
-    console.error("❌ Error en el Seed:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .catch((e) => { console.error("❌ Error en el Seed:", e); process.exit(1); })
+  .finally(async () => { await prisma.$disconnect(); });

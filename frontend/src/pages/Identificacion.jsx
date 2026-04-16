@@ -96,19 +96,19 @@ const Identificacion = () => {
                                     </td>
                                     <td className="p-4 hidden lg:table-cell">
                                         <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-md">
-                                            {est.nivel || "No definido"}
+                                            {est.nivel.nivel || "No definido"}
                                         </span>
                                     </td>
                                     <td className="p-4">
                                         <div className="flex flex-col">
-                                            <span className="text-sm font-medium text-gray-700">{est.nombreApoderado}</span>
-                                            <span className="text-[10px] text-gray-400">{est.telefono}</span>
+                                            <span className="text-sm font-medium text-gray-700">{est.apoderados[0]?.apoderado?.nombreApoderado || "Sin apoderado Asignado"}</span>
+                                            <span className="text-[10px] text-gray-400">{est.apoderados[0]?.apoderado?.telefono || "Sin teléfono"}</span>
                                         </div>
                                     </td>
                                     <td className="p-4 hidden md:table-cell">
-                                        <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${est.estado === 'Vigente' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                                        <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${est.estado === true ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                                             }`}>
-                                            {est.estado || 'Vigente'}
+                                            {est.estado === true ? 'VIGENTE' : 'RETIRADO'}
                                         </span>
                                     </td>
                                     <td className="p-4 text-right">

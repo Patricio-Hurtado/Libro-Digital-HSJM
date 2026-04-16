@@ -1,61 +1,121 @@
 // backend/src/services/estudianteService.js
 import prisma from '../config/db.js';
 
-export const registrarEstudiante = async (data) => {
-  // Mapeo para convertir el texto del Select al Enum de la base de datos
-  const nivelMapper = {
-    'Sala Cuna Menor': 'SALA_CUNA_MENOR',
-    'Sala Cuna Mayor': 'SALA_CUNA_MAYOR',
-    'Nivel Medio Menor': 'NIVEL_MEDIO_MENOR',
-    'Nivel Medio Mayor': 'NIVEL_MEDIO_MAYOR'
-  };
-  // Aquí es donde transformamos los datos si es necesario
-  return await prisma.estudiante.create({
-    data: {
-      // Identificación
-      rut: data.rut,
-      nombre: data.nombre,
-      apellido: data.apellido,
-      sexo: data.sexo,
-      // Convertimos el string de la fecha a un objeto Date real para PostgreSQL
-      fechaNacimiento: new Date(data.fechaNacimiento),
-      nacionalidad: data.nacionalidad || 'Chilena',
+export const registrarEstudiante = async (datos) => {
+  return await prisma.$transaction(async (tx) => {
+    
+    // 1. Función interna para procesar apoderados (Upsert)
+    const UpsertApoderado = async (ap) => {
+      if (!ap || !ap.rut) return null; // Si no hay datos, no hace nada
+      
+      return await tx.apoderado.upsert({
+        where: { rutApoderado: ap.rut },
+        update: {
+          nombreApoderado: ap.nombre,
+          telefono: ap.telefono,
+          emailApoderado: ap.email
+        },
+        create: {
+          rutApoderado: ap.rut,
+          nombreApoderado: ap.nombre,
+          telefono: ap.telefono,
+          emailApoderado: ap.email
+        }
+      });
+    };
 
-      // Domicilio
-      direccion: data.direccion,
-      comuna: data.comuna || 'Melipilla',
+    // 2. Procesamos ambos apoderados
+    const titularDb = await UpsertApoderado(datos.apoderadoTitular);
+    const suplenteDb = await UpsertApoderado(datos.apoderadoSuplente);
 
-      // Salud
-      prevision: data.prevision,
-      tipoSangre: data.tipoSangre,
-      alergias: data.alergias,
-      restriccionesAliment: data.restriccionesAlimentarias,
-      vacunasAlDia: data.vacunasAlDía === 'Sí', // Convierte el "Sí/No" en Boolean
-
-      // Apoderado
-      nombreApoderado: data.nombreApoderado,
-      rutApoderado: data.rutApoderado,
-      parentesco: data.parentesco,
-      telefono: data.telefono,
-      emailApoderado: data.emailApoderado,
-
-      // Matrícula
-      fechaIngreso: data.fechaIngreso ? new Date(data.fechaIngreso) : new Date(),
-      nivel: nivelMapper[data.nivel] || 'NIVEL_MEDIO_MAYOR',
-      estado: data.estado === 'Vigente' ? 'VIGENTE' : 'RETIRADO'
+    if (!titularDb) {
+      throw new Error("El apoderado titular es obligatorio.");
     }
+
+    // 3. Crear el Estudiante y sus relaciones intermedias
+    const nuevoEstudiante = await tx.estudiante.create({
+      data: {
+        rut: datos.rut,
+        nombre: datos.nombre,
+        apellido: datos.apellido,
+        fechaNacimiento: new Date(datos.fechaNacimiento),
+        direccion: datos.direccion,
+        prevision: datos.prevision,
+        restriccionesAlimentarias: datos.restriccionesAlimentarias,
+        alergias: datos.alergias, // Asegúrate que ya hiciste el migrate de este campo
+        vacunasAlDia: Boolean(datos.vacunasAlDia),
+        fechaIngreso: new Date(datos.fechaIngreso),
+        estado: Boolean(datos.estado),
+        
+        // IDs Relacionales
+        sexoId: datos.sexoId,
+        comunaId: datos.comunaId,
+        nivelId: datos.nivelId,
+        tipoSangreId: datos.tipoSangreId,
+        nacionalidadId: datos.nacionalidadId,
+
+        // 4. Crear relaciones en EstudianteApoderado
+        apoderados: {
+          create: [
+            {
+              apoderadoId: titularDb.id,
+              tipoApoderado: 'TITULAR',
+              parentesco: datos.apoderadoTitular.parentesco,
+              prioridad: 1
+            },
+            // Solo agrega el suplente si existe en la base de datos
+            ...(suplenteDb ? [{
+              apoderadoId: suplenteDb.id,
+              tipoApoderado: 'SUPLENTE',
+              parentesco: datos.apoderadoSuplente.parentesco,
+              prioridad: 2
+            }] : [])
+          ]
+        }
+      },
+      include: {
+        apoderados: {
+          include: { apoderado: true }
+        }
+      }
+    });
+
+    return nuevoEstudiante;
   });
 };
 
 export const listarEstudiantes = async () => {
   return await prisma.estudiante.findMany({
-    orderBy: { apellido: 'asc' }
+    orderBy: { nombre: 'asc' },
+    include: {
+      nivel: true,     // Para mostrar "Nivel Medio Mayor"
+      comuna: true,    // Para mostrar "Melipilla"
+      sexo: true,      // Para mostrar "Masculino/Femenino"
+      nacionalidad: true, // Para mostrar "Chilena" u otra nacionalidad
+      apoderados: {    // Para obtener el nombre del apoderado titular
+        include: {
+          apoderado: true
+        },
+        where: { prioridad: 1 } // Traemos solo al principal para la lista
+      }
+    }
   });
 };
 
 export const obtenerPorId = async (id) => {
-  // Solo lógica de base de datos
   return await prisma.estudiante.findUnique({
-    where: { id: id }
+    where: { id },
+    include: {
+      sexo: true,           // Trae el objeto { genero: "Masculino" }
+      comuna: true,         // Trae el objeto { comuna: "Melipilla" }
+      nivel: true,          // Trae el objeto { nivel: "Nivel Medio Mayor" }
+      tipoSangre: true,     // Trae el objeto { grupo: "O+" }
+      nacionalidad: true,
+      apoderados: {         // Entra a la tabla intermedia
+        include: {
+          apoderado: true   // Trae los datos del apoderado real
+        }
+      }
+    }
   });
 };

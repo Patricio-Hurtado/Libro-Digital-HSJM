@@ -40,3 +40,23 @@ export const getEstudianteById = async (id) => {
     throw error;
   }
 };
+
+export const getComunas = async () => {
+    const response = await api.get('/comunas');
+    return response.data;
+};
+
+export const getNiveles = async () => {
+    const response = await api.get('/niveles');
+    return response.data;
+};
+
+export const getSexos = async () => {
+    const response = await api.get('/sexos');
+    return response.data;
+};
+
+export const getGruposSanguineos = async () => {
+    const response = await api.get('/tipos-sangre');
+    return response.data;
+};

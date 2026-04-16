@@ -24,6 +24,19 @@ enum Role {
   TECNICO
   ADMIN
 }
+enum TipoApoderado {
+  TITULAR
+  SUPLENTE
+}
+
+enum Parentesco {
+  MADRE
+  PADRE
+  ABUELA_O
+  TIA_O
+  HERMANA_O
+  OTRO
+}
 
 model User {
   id        String   @id @default(uuid())
@@ -44,63 +57,101 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-// --- MÓDULO IDENTIFICACIÓN (Ficha del Niño) ---
+// --- MÓDULO IDENTIFICACIÓN (Relacional) ---
 
 model Estudiante {
-  id                    String    @id @default(uuid())
+  id                        String   @id @default(uuid())
+  rut                       String   @unique
+  nombre                    String
+  apellido                  String
+  fechaNacimiento           DateTime
+  direccion                 String
+  estado                    Boolean  @default(true) 
+  fechaIngreso              DateTime @default(now())
+  vacunasAlDia              Boolean  @default(true)
+  restriccionesAlimentarias String?
+  alergias                  String?
+  prevision                 String?
+
+  // Relaciones Maestras
+  tipoSangreId String
+  tipoSangre   GrupoSanguineo @relation(fields: [tipoSangreId], references: [id])
+
+  comunaId String
+  comuna   Comuna @relation(fields: [comunaId], references: [id])
+
+  nivelId String
+  nivel   Nivel @relation(fields: [nivelId], references: [id])
+
+  sexoId String
+  sexo   Sexo @relation(fields: [sexoId], references: [id])
   
-  // Identificación
-  rut                   String    @unique
-  nombre                String
-  apellido              String
-  sexo                  String    // O puedes usar Enum (MASCULINO, FEMENINO)
-  fechaNacimiento       DateTime
-  nacionalidad          String    @default("Chilena")
+  nacionalidadId String
+  nacionalidad Nacionalidad @relation(fields: [nacionalidadId], references: [id])
 
-  // Domicilio
-  direccion             String
-  comuna                String    @default("Melipilla")
+  // Relaciones de Módulos
+  apoderados    EstudianteApoderado[]
+  asistencias   Asistencia[]
+  observaciones Observation[]
+  evaluaciones  Evaluacion[]
 
-  // Salud
-  prevision             String?   // Fonasa, Isapre, etc.
-  tipoSangre            String?
-  alergias              String?
-  restriccionesAliment  String?
-  vacunasAlDia          Boolean   @default(true)
-
-  // Apoderados
-  nombreApoderado       String
-  rutApoderado          String
-  parentesco            String
-  telefono              String
-  emailApoderado        String?
-
-  // Situación de Matrícula
-  fechaIngreso          DateTime  @default(now())
-  nivel                 Nivel     // Usamos el Enum definido abajo
-  estado                Estado    @default(VIGENTE)
-
-  // Relaciones
-  asistencias     Asistencia[]
-  observaciones   Observation[]
-  evaluaciones    Evaluacion[]
-
-  // Auditoría básica
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// Enums para estandarizar opciones
-enum Nivel {
-  SALA_CUNA_MENOR
-  SALA_CUNA_MAYOR
-  NIVEL_MEDIO_MENOR
-  NIVEL_MEDIO_MAYOR
+model Apoderado {
+  id              String                @id @default(uuid())
+  nombreApoderado String
+  rutApoderado    String                @unique
+  telefono        String
+  emailApoderado  String
+  estudiantes     EstudianteApoderado[]
 }
 
-enum Estado {
-  VIGENTE
-  RETIRADO
+model EstudianteApoderado {
+  id            String        @id @default(uuid())
+  estudianteId  String
+  apoderadoId   String
+  tipoApoderado TipoApoderado
+  parentesco    Parentesco
+  prioridad     Int
+
+  estudiante Estudiante @relation(fields: [estudianteId], references: [id])
+  apoderado  Apoderado  @relation(fields: [apoderadoId], references: [id])
+
+  @@unique([estudianteId, prioridad])
+}
+
+// --- TABLAS MAESTRAS ---
+
+model GrupoSanguineo {
+  id          String       @id @default(uuid())
+  grupo       String
+  estudiantes Estudiante[]
+}
+
+model Comuna {
+  id          String       @id @default(uuid())
+  comuna      String
+  estudiantes Estudiante[]
+}
+
+model Nacionalidad {
+  id          String       @id @default(uuid())
+  nacionalidad String
+  estudiantes Estudiante[]
+}
+
+model Nivel {
+  id          String       @id @default(uuid())
+  nivel       String
+  estudiantes Estudiante[]
+}
+
+model Sexo {
+  id          String       @id @default(uuid())
+  genero      String
+  estudiantes Estudiante[]
 }
 
 // --- MÓDULO ASISTENCIA ---

@@ -28,7 +28,7 @@ import * as estudianteController from './controllers/estudianteController.js';
 import * as uploadController from './controllers/uploadController.js';
 import { upload } from './config/multer.js';
 import estudianteRoutes from './routes/estudiantesRoutes.js';
-
+import maestrosRoutes from './routes/maestrosRoutes.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
@@ -49,6 +49,7 @@ app.put('/api/upload/profile/:userId', uploadController.updateProfilePhoto);
 
 // --- RUTAS DE ESTUDIANTES ---
 app.use('/api/estudiantes', estudianteRoutes);
+app.use('/api/maestros', maestrosRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
