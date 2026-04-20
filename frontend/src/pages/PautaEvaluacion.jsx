@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Save, BarChart3, AlertCircle, CheckCircle2, UserCircle, FileDown, Loader2 } from 'lucide-react';
 import { getEstudiantes } from '../services/estudianteService';
 import { saveEvaluacion } from '../services/evaluacionService';
-// --- CAMBIO AQUÍ: Importación directa y moderna para evitar que Vite se confunda ---
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable'; 
+import logoHospital from '../assets/logo-hospital.png';
+import logoJardin from '../assets/logo-salacuna.png';
 
 // --- ESTRUCTURA DEL EXCEL DEL JEFE ---
 const matrizEvaluacion = {
@@ -81,23 +82,25 @@ const PautaEvaluacion = () => {
       // 1. Crear el documento
       const doc = new jsPDF();
 
-      // 2. Título y Membrete
+      doc.addImage(logoHospital, 'PNG', 14, 10, 40, 25); // Logo Izquierda
+      doc.addImage(logoJardin, 'PNG', 160, 10, 40, 25);  // Logo Derecha
+       // 2. Título y Membrete (Movidos hacia abajo a la posición 40 para hacerle espacio a los logos)
       doc.setFontSize(18);
       doc.setFont(undefined, 'bold');
-      doc.text("Informe Pedagógico al Hogar", 14, 20);
+      doc.text("Informe Pedagógico al Hogar", 14, 40);
       
       doc.setFontSize(10);
       doc.setFont(undefined, 'normal');
       doc.setTextColor(100);
-      doc.text("Hospital San José de Melipilla - Aula Hospitalaria", 14, 26);
+      doc.text("Hospital San José de Melipilla - Aula Hospitalaria", 14, 46);
 
-      // 3. Datos del Alumno
+      // 3. Datos del Alumno (También movidos hacia abajo)
       doc.setTextColor(0);
       doc.setFontSize(11);
-      doc.text(`Párvulo: ${estudianteObj.nombre} ${estudianteObj.apellido}`, 14, 40);
-      doc.text(`RUT: ${estudianteObj.rut}`, 14, 46);
-      doc.text(`Nivel: ${estudianteObj.nivel}`, 120, 40);
-      doc.text(`Periodo: ${tipoEvaluacion}`, 120, 46);
+      doc.text(`Párvulo: ${estudianteObj.nombre} ${estudianteObj.apellido}`, 14, 60);
+      doc.text(`RUT: ${estudianteObj.rut}`, 14, 66);
+      doc.text(`Nivel: ${estudianteObj.nivel}`, 120, 60);
+      doc.text(`Periodo: ${tipoEvaluacion}`, 120, 66);
 
       // 4. Construir las filas de la tabla
       const filasDeTabla = [];
@@ -110,9 +113,9 @@ const PautaEvaluacion = () => {
         });
       });
 
-      // 5. --- CAMBIO AQUÍ: Llamamos a autoTable de forma directa ---
+      // 5. Tabla (Movida hacia abajo a la posición startY: 75)
       autoTable(doc, {
-        startY: 55,
+        startY: 75,
         head: [['Área de Desarrollo y Núcleos', 'Evaluación (L / EP / NO)']],
         body: filasDeTabla,
         theme: 'grid',
@@ -169,8 +172,9 @@ const PautaEvaluacion = () => {
       <div className="flex justify-between items-center mb-4 shrink-0">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 flex items-center gap-2">
-            <BarChart3 className="text-blue-600" /> Evaluación Pedagógica
+             Evaluación Pedagógica
           </h2>
+          <p className="text-xs text-gray-500 font-medium">Hospital San José de Melipilla</p>
         </div>
         <div className="flex items-center gap-3">
           {mensaje && (
@@ -204,7 +208,6 @@ const PautaEvaluacion = () => {
               <div className="shrink-0">
                   <label className="block text-[10px] font-black text-gray-400 uppercase mb-1">Seleccionar Estudiante</label>
                   <div className="relative">
-                    <UserCircle className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     <select 
                       value={estudianteSeleccionado} 
                       onChange={(e) => setEstudianteSeleccionado(e.target.value)} 

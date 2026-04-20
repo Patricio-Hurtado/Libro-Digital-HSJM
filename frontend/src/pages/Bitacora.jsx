@@ -103,8 +103,9 @@ const Bitacora = () => {
       <div className="flex justify-between items-center mb-4 shrink-0">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 flex items-center gap-2">
-            <BookOpen className="text-blue-600" /> Experiencias Pedagógicas
+             Experiencias Pedagógicas
           </h2>
+          <p className="text-xs text-gray-500 font-medium">Hospital San José de Melipilla</p>
         </div>
         <div className="flex items-center gap-4">
           {mensaje && (
