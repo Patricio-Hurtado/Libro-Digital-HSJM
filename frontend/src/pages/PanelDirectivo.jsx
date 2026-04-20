@@ -22,7 +22,7 @@ const alertasSimuladas = [
   { id: 2, parvulo: 'Sofía Flores', nivel: 'Sala Cuna Mayor', motivo: 'Múltiples evaluaciones en "NO"', tipo: 'evaluacion' },
 ];
 
-// --- NUEVO: DATOS MULTINIVEL (Áreas y Núcleos de tus fotos) ---
+// --- DATOS MULTINIVEL ---
 const logroPorAreasGenerales = [
   { nombre: 'Desarrollo Personal', logrado: 80, proceso: 15, no_observado: 5 },
   { nombre: 'Comunicación Integral', logrado: 85, proceso: 10, no_observado: 5 },
@@ -77,10 +77,10 @@ const PanelDirectivo = () => {
   const tituloKpiDinamico = filtroArea === 'TODAS' ? 'Promedio Todas las Áreas' : `Logro en ${filtroArea}`;
   const valorKpiDinamico = `${Math.round(datosGraficoLogro.reduce((acc, curr) => acc + curr.logrado, 0) / datosGraficoLogro.length)}%`;
   return (
-    <div className="">
+    <div className="flex flex-col w-full h-full animate-in fade-in duration-500">
       
-      {/* HEADER Y FILTROS */}
-      <div className="flex justify-between items-center mb-6 shrink-0">
+      {/* HEADER Y FILTROS: Ajustado para que se apile en celulares */}
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 shrink-0 gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <BarChart3 className="text-blue-600" /> Panel Directivo
@@ -88,18 +88,18 @@ const PanelDirectivo = () => {
           <p className="text-xs text-gray-500 font-medium mt-1">Vista gerencial de indicadores - HSJM</p>
         </div>
         
-        <div className="flex gap-2 bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-2 px-2 border-r border-gray-100">
-            <Filter size={14} className="text-gray-400" />
-            <select value={filtroPeriodo} onChange={e => setFiltroPeriodo(e.target.value)} className="text-xs font-bold text-gray-600 outline-none bg-transparent cursor-pointer">
+        {/* Contenedor de filtros responsivo */}
+        <div className="flex flex-col sm:flex-row gap-2 bg-white p-2 rounded-xl border border-gray-200 shadow-sm w-full lg:w-auto">
+          <div className="flex items-center gap-2 px-2 pb-2 sm:pb-0 sm:border-r border-b sm:border-b-0 border-gray-100 w-full sm:w-auto">
+            <Filter size={14} className="text-gray-400 shrink-0" />
+            <select value={filtroPeriodo} onChange={e => setFiltroPeriodo(e.target.value)} className="text-xs font-bold text-gray-600 outline-none bg-transparent cursor-pointer w-full sm:w-auto">
               <option>Abril 2026</option>
               <option>Primer Trimestre</option>
               <option>Semestre 1</option>
             </select>
           </div>
-          <div className="flex items-center gap-2 px-2 border-r border-gray-100">
-            {/* ESTE FILTRO CONTROLA EL GRÁFICO */}
-            <select value={filtroArea} onChange={e => setFiltroArea(e.target.value)} className="text-xs font-bold text-gray-600 outline-none bg-transparent cursor-pointer">
+          <div className="flex items-center gap-2 px-2 pb-2 sm:pb-0 sm:border-r border-b sm:border-b-0 border-gray-100 w-full sm:w-auto">
+            <select value={filtroArea} onChange={e => setFiltroArea(e.target.value)} className="text-xs font-bold text-gray-600 outline-none bg-transparent cursor-pointer w-full sm:w-auto max-w-full truncate">
               <option value="TODAS">Todas las Áreas</option>
               <option value="Desarrollo Personal">Desarrollo Personal</option>
               <option value="Comunicación Integral">Comunicación Integral</option>
@@ -107,8 +107,8 @@ const PanelDirectivo = () => {
               <option value="Sello Institucional">Sello Institucional</option>
             </select>
           </div>
-          <div className="flex items-center gap-2 px-2">
-            <select value={filtroNivel} onChange={e => setFiltroNivel(e.target.value)} className="text-xs font-bold text-gray-600 outline-none bg-transparent cursor-pointer">
+          <div className="flex items-center gap-2 px-2 w-full sm:w-auto">
+            <select value={filtroNivel} onChange={e => setFiltroNivel(e.target.value)} className="text-xs font-bold text-gray-600 outline-none bg-transparent cursor-pointer w-full sm:w-auto">
               <option value="TODOS">Todos los Niveles</option>
               <option value="Sala Cuna Menor">Sala Cuna Menor</option>
               <option value="Sala Cuna Mayor">Sala Cuna Mayor</option>
@@ -276,7 +276,7 @@ const PanelDirectivo = () => {
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 20px; }
       `}} />

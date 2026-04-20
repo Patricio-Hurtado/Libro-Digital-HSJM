@@ -21,16 +21,15 @@ const Layout = () => {
 
   const [usuario, setUsuario] = useState({ nombre: 'Usuario', role: 'Invitado', foto: null, id: null });
 
-  // Cargar datos de sesión desde localStorage al montar
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     const userName = localStorage.getItem('userName');
     const userRole = localStorage.getItem('userRole');
     const userFoto = localStorage.getItem('userFoto');
     if (userName || userRole || userFoto) {
-      setUsuario({ 
+      setUsuario({
         id: userId,
-        nombre: userName || 'Usuario', 
+        nombre: userName || 'Usuario',
         role: userRole || 'Invitado',
         foto: userFoto ? `http://localhost:3000${userFoto}` : null
       });
@@ -61,109 +60,113 @@ const Layout = () => {
     { name: 'Planificación', icon: <ClipboardList size={20} />, path: '/planificacion' },
     { name: 'Bitacora', icon: <ClipboardList size={20} />, path: '/bitacora' },
     { name: 'Evaluación', icon: <BarChart3 size={20} />, path: '/evaluacion' },
-    { name: 'PautaEvaluación', icon: <BarChart3 size={20} />, path: '/pauta-evaluacion' },
+    { name: 'Pauta Evaluación', icon: <BarChart3 size={20} />, path: '/pauta-evaluacion' },
     { name: 'Anécdotas y vida', icon: <BookOpen size={20} />, path: '/anecdotas' },
     { name: 'Dashboard', icon: <BarChart3 size={20} />, path: '/dashboard' },
-    { name: 'PanelDirectivo', icon: <BarChart3 size={20} />, path: '/panel-directivo' },
+    { name: 'Panel Directivo', icon: <BarChart3 size={20} />, path: '/panel-directivo' },
   ];
 
   return (
-    <div className="flex min-h-screen bg-gray-100 font-sans">
-
-      {/* SIDEBAR (Escritorio: fijo | Móvil: absolute/hidden) */}
+    <div className="flex min-h-screen bg-slate-100 font-sans">
       <aside className={`
-        ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
-        fixed inset-y-0 left-0 z-50 w-64 bg-white border-r transition-transform duration-300 md:relative md:translate-x-0
+        ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+        fixed inset-y-0 left-0 z-50 w-72 overflow-hidden rounded-r-3xl
+        bg-white shadow-[8px_0_40px_rgba(15,23,42,0.12)] border-r border-slate-200
+        transition-transform duration-300 xl:relative xl:translate-x-0
       `}>
-        <div className="p-6">
-          <div className="flex items-center gap-2 mb-10">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
-              <BookOpen size={24} strokeWidth={2.5} />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold leading-tight text-blue-900">EduBook</h1>
-              <p className="text-xs text-gray-500">Educación parvularia</p>
-            </div>
-          </div>
-
-          <nav className="space-y-2">
-            {menuItems.map((item) => (
-              <NavLink
-                key={item.path}
-                to={item.path}
-                className={({ isActive }) => `
-                  flex items-center gap-3 p-3 rounded-xl transition
-                  ${isActive ? 'bg-blue-100 text-blue-700 font-semibold' : 'text-gray-600 hover:bg-gray-50'}
-                `}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <span>{item.icon}</span> {item.name}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-
-        {/* Perfil al pie del Sidebar */}
-        <div className="absolute bottom-0 w-full p-6 border-t bg-gray-100">
-          <div 
-            className="group relative cursor-pointer"
-            onClick={() => setIsPhotoModalOpen(true)}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div className="relative">
-                {usuario.foto ? (
-                  <img 
-                    src={usuario.foto} 
-                    alt={usuario.nombre}
-                    className="w-9 h-9 rounded-full object-cover border-2 border-blue-200 shrink-0"
-                  />
-                ) : (
-                  <UserCircle size={35} className="flex items-center justify-center text-lg shrink-0" />
-                )}
-                <Camera 
-                  size={14} 
-                  className="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition"
-                />
+        <div className="relative flex h-full flex-col justify-between p-6">
+          <div className="space-y-8">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg">
+                <BookOpen size={24} strokeWidth={2.5} />
               </div>
               <div>
-                <p className="text-sm font-bold text-gray-800">{usuario.nombre}</p>
-                <p className="text-xs text-gray-500">{usuario.role}</p>
+                <h1 className="text-xl font-extrabold tracking-tight text-slate-900">EduBook</h1>
+                <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Educación parvularia</p>
               </div>
             </div>
+
+            <nav className="space-y-2">
+              {menuItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) => `
+                    group flex items-center gap-4 rounded-full px-4 py-3 text-sm font-medium
+                    transition duration-300 ease-out
+                    ${isActive
+                      ? 'bg-blue-500 text-white shadow-[0_8px_24px_rgba(148,163,184,0.1)]'
+                      : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}
+                  `}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 transition group-hover:bg-slate-200">
+                    {item.icon}
+                  </span>
+                  <span>{item.name}</span>
+                </NavLink>
+              ))}
+            </nav>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="flex items-center gap-2 text-sm text-gray-500 hover:text-red-600">
-            <LogOut />Cerrar sesión
-          </button>
+
+          <div className="mt-6 rounded-[2rem] border border-slate-200 bg-slate-50 p-4 shadow-sm">
+            <div
+              className="group relative cursor-pointer"
+              onClick={() => setIsPhotoModalOpen(true)}
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="relative">
+                  {usuario.foto ? (
+                    <img
+                      src={usuario.foto}
+                      alt={usuario.nombre}
+                      className="h-12 w-12 rounded-full object-cover border border-slate-200"
+                    />
+                  ) : (
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+                      <UserCircle size={28} />
+                    </div>
+                  )}
+                  <Camera
+                    size={14}
+                    className="absolute bottom-0 right-0 rounded-full bg-slate-200 p-1 text-slate-700 opacity-0 transition group-hover:opacity-100"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-900">{usuario.nombre}</p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-500">{usuario.role}</p>
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-sm text-slate-700 transition hover:bg-slate-200 hover:text-slate-900"
+            >
+              <LogOut />Cerrar sesión
+            </button>
+          </div>
         </div>
       </aside>
 
-      {/* CONTENIDO PRINCIPAL */}
       <div className="flex-1 flex flex-col min-w-0">
-
-        {/* Header móvil para abrir el menú */}
-        <header className="md:hidden bg-white p-4 border-b flex justify-between items-center">
-          <span className="font-bold text-blue-900">EduBook</span>
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-2xl text-blue-900">
+        <header className="xl:hidden bg-white p-4 border-b border-slate-200 flex justify-between items-center">
+          <span className="font-bold text-slate-900">EduBook</span>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-2xl text-slate-900">
             {isMenuOpen ? '✕' : '☰'}
           </button>
         </header>
 
-        {/* El Contenedor que cambia (Registro de Identificación, etc) */}
         <main className="p-4 md:p-10 overflow-y-auto">
-          {/* Breadcrumb */}
-          <nav className="text-xs text-gray-400 mb-4">
-            Libro de clases digital / <span className="text-gray-600 font-medium">{currentTitle}</span>
+          <nav className="text-xs text-slate-500 mb-4">
+            Libro de clases digital / <span className="text-slate-700 font-medium">{currentTitle}</span>
           </nav>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6  ">
+          <div className="bg-white rounded-[2rem] shadow-xl border border-slate-200 p-6">
             <Outlet />
           </div>
         </main>
       </div>
 
-      {/* Overlay para cerrar menú en móvil al hacer click fuera */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 bg-black/20 z-40 md:hidden"
@@ -171,8 +174,7 @@ const Layout = () => {
         />
       )}
 
-      {/* Modal para cambiar foto de perfil */}
-      <PhotoUploadModal 
+      <PhotoUploadModal
         isOpen={isPhotoModalOpen}
         onClose={() => setIsPhotoModalOpen(false)}
         userId={usuario.id}
