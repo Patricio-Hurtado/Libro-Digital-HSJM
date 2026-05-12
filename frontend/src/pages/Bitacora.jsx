@@ -105,7 +105,7 @@ const Bitacora = () => {
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 flex items-center gap-2">
              Experiencias Pedagógicas
           </h2>
-          <p className="text-xs text-gray-500 font-medium">Hospital San José de Melipilla</p>
+          <p className="text-sm text-gray-500 font-medium mt-1">Hospital San José de Melipilla</p>
         </div>
         <div className="flex items-center gap-4">
           {mensaje && (
@@ -125,7 +125,7 @@ const Bitacora = () => {
         {/* COLUMNA IZQUIERDA: Formulario de la Actividad */}
         <div className="lg:w-1/3 flex flex-col shrink-0 min-h-0">
           <div className="p-1 flex flex-col flex-1 min-h-0">
-            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 shrink-0">1. Datos Actividad</h3>
+            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 shrink-0">Datos Actividad</h3>
             
             <div className="space-y-4 flex flex-col flex-1 min-h-0">
               <div className="shrink-0">

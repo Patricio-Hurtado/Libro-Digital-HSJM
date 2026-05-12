@@ -85,7 +85,7 @@ const PanelDirectivo = () => {
           <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <BarChart3 className="text-blue-600" /> Panel Directivo
           </h2>
-          <p className="text-xs text-gray-500 font-medium mt-1">Vista gerencial de indicadores - HSJM</p>
+          <p className="text-sm text-gray-500 font-medium mt-1">Vista gerencial de indicadores - HSJM</p>
         </div>
         
         {/* Contenedor de filtros responsivo */}
@@ -145,7 +145,7 @@ const PanelDirectivo = () => {
               <p className="text-2xl font-black text-gray-800">{valorKpiDinamico}</p>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-red-200 bg-red-50/50 shadow-sm flex items-center gap-4 transition-all">
+          <div className="bg-white p-4 rounded-2xl border border-red-200 shadow-sm flex items-center gap-4 transition-all">
             <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600"><AlertTriangle size={24} /></div>
             <div>
               <p className="text-[10px] text-red-400 font-black uppercase tracking-wider">Alertas Activas</p>

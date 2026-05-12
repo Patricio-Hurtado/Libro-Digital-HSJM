@@ -100,7 +100,7 @@ const NuevoEstudiante = () => {
   );
 
   return (
-    <div className="animate-in fade-in duration-500 ">
+    <div className="transition-opacity duration-500 opacity-100 ">
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-gray-500 mb-6 hover:text-blue-600 transition-colors">
         <ArrowLeft size={18} /> Volver al listado
       </button>

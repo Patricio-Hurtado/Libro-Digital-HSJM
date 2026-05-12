@@ -174,7 +174,7 @@ const PautaEvaluacion = () => {
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 flex items-center gap-2">
              Evaluación Pedagógica
           </h2>
-          <p className="text-xs text-gray-500 font-medium">Hospital San José de Melipilla</p>
+          <p className="text-sm text-gray-500 font-medium mt-1">Hospital San José de Melipilla</p>
         </div>
         <div className="flex items-center gap-3">
           {mensaje && (
@@ -202,7 +202,7 @@ const PautaEvaluacion = () => {
       <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-0">
         <div className="lg:w-1/3 flex flex-col shrink-0 min-h-0">
           <div className="p-1 flex flex-col flex-1 min-h-0">
-            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 shrink-0">1. Datos del Párvulo</h3>
+            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 shrink-0">Datos del Párvulo</h3>
             
             <div className="space-y-4 flex flex-col flex-1 min-h-0">
               <div className="shrink-0">
@@ -211,7 +211,7 @@ const PautaEvaluacion = () => {
                     <select 
                       value={estudianteSeleccionado} 
                       onChange={(e) => setEstudianteSeleccionado(e.target.value)} 
-                      className="w-full pl-10 p-3 border border-gray-200 focus:border-blue-500 outline-none rounded-xl text-sm font-bold text-gray-700 bg-white shadow-sm"
+                      className="w-full p-3 border border-gray-200 focus:border-blue-500 outline-none rounded-xl text-sm font-bold text-gray-700 bg-white shadow-sm"
                     >
                       <option value="">Seleccione un alumno de la nómina...</option>
                       {estudiantes.map(est => (

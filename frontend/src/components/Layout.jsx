@@ -3,12 +3,13 @@ import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import {
   UserCheck,
   Calendar,
-  ClipboardList,
-  BarChart3,
+  NotebookPen,
+  ClipboardCheck,
   BookOpen,
   LogOut,
   UserCircle,
-  Camera
+  Camera,
+  ChartNoAxesCombined
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import PhotoUploadModal from './PhotoUploadModal';
@@ -57,13 +58,13 @@ const Layout = () => {
   const menuItems = [
     { name: 'Identificación', icon: <UserCheck size={20} />, path: '/identificacion' },
     { name: 'Asistencia diaria', icon: <Calendar size={20} />, path: '/asistencia' },
-    { name: 'Planificación', icon: <ClipboardList size={20} />, path: '/planificacion' },
-    { name: 'Bitacora', icon: <ClipboardList size={20} />, path: '/bitacora' },
-    { name: 'Evaluación', icon: <BarChart3 size={20} />, path: '/evaluacion' },
-    { name: 'Pauta Evaluación', icon: <BarChart3 size={20} />, path: '/pauta-evaluacion' },
-    { name: 'Anécdotas y vida', icon: <BookOpen size={20} />, path: '/anecdotas' },
-    { name: 'Dashboard', icon: <BarChart3 size={20} />, path: '/dashboard' },
-    { name: 'Panel Directivo', icon: <BarChart3 size={20} />, path: '/panel-directivo' },
+    // { name: 'Planificación', icon: <ClipboardList size={20} />, path: '/planificacion' },
+    { name: 'Bitacora', icon: <NotebookPen size={20} />, path: '/bitacora' },
+    // { name: 'Evaluación', icon: <BarChart3 size={20} />, path: '/evaluacion' },
+    { name: 'Pauta Evaluación', icon: <ClipboardCheck size={20} />, path: '/pauta-evaluacion' },
+    // { name: 'Anécdotas y vida', icon: <BookOpen size={20} />, path: '/anecdotas' },
+    // { name: 'Dashboard', icon: <BarChart3 size={20} />, path: '/dashboard' },
+    { name: 'Panel Directivo', icon: <ChartNoAxesCombined size={20} />, path: '/panel-directivo' },
   ];
 
   return (
@@ -109,7 +110,7 @@ const Layout = () => {
             </nav>
           </div>
 
-          <div className="mt-6 rounded-[2rem] border border-slate-200 bg-slate-50 p-4 shadow-sm">
+          <div className="mt-6 rounded-4xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
             <div
               className="group relative cursor-pointer"
               onClick={() => setIsPhotoModalOpen(true)}
@@ -161,7 +162,7 @@ const Layout = () => {
             Libro de clases digital / <span className="text-slate-700 font-medium">{currentTitle}</span>
           </nav>
 
-          <div className="bg-white rounded-[2rem] shadow-xl border border-slate-200 p-6">
+          <div className="bg-white rounded-4xl shadow-xl border border-slate-200 p-6">
             <Outlet />
           </div>
         </main>
