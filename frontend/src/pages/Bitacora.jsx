@@ -10,6 +10,76 @@ const matrizCurricular = {
   "Estilo de vida Saludable": ["Alimentación Consciente", "Higiene y autocuidado", "Actividad Física", "Conciencia Corporal", "Cuidado del Entorno"]
 };
 
+const datosPruebaEstudiantes = [
+  // --- SALA CUNA MENOR (15) ---
+  { id: 'SCM-01', rut: '26.123.456-1', nombre: 'Mateo', apellido: 'Silva', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-02', rut: '26.234.567-2', nombre: 'Isabella', apellido: 'Rojas', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-03', rut: '26.345.678-3', nombre: 'Agustín', apellido: 'Soto', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-04', rut: '26.456.789-4', nombre: 'Emilia', apellido: 'Muñoz', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-05', rut: '26.567.890-5', nombre: 'Lucas', apellido: 'Contreras', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-06', rut: '26.678.901-6', nombre: 'Sofía', apellido: 'Sepúlveda', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-07', rut: '26.789.012-7', nombre: 'Benjamín', apellido: 'Morales', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-08', rut: '26.890.123-8', nombre: 'Florencia', apellido: 'Díaz', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-09', rut: '26.901.234-9', nombre: 'Vicente', apellido: 'Fuentes', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-10', rut: '26.012.345-K', nombre: 'Maite', apellido: 'Castro', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-11', rut: '26.111.222-3', nombre: 'Maximiliano', apellido: 'Vargas', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-12', rut: '26.222.333-4', nombre: 'Josefa', apellido: 'Reyes', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-13', rut: '26.333.444-5', nombre: 'Tomás', apellido: 'Herrera', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-14', rut: '26.444.555-6', nombre: 'Martina', apellido: 'Carrasco', nivel: 'SALA_CUNA_MENOR' },
+  { id: 'SCM-15', rut: '26.555.666-7', nombre: 'Joaquín', apellido: 'Medina', nivel: 'SALA_CUNA_MENOR' },
+
+  // --- SALA CUNA MAYOR (15) ---
+  { id: 'SCM-16', rut: '25.666.777-8', nombre: 'Martín', apellido: 'Pizarro', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-17', rut: '25.777.888-9', nombre: 'Amanda', apellido: 'Valdés', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-18', rut: '25.888.999-0', nombre: 'Gaspar', apellido: 'Tapia', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-19', rut: '25.999.000-1', nombre: 'Antonella', apellido: 'Cortés', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-20', rut: '25.121.212-2', nombre: 'Alonso', apellido: 'Núñez', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-21', rut: '25.232.323-3', nombre: 'Julieta', apellido: 'Araya', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-22', rut: '25.343.434-4', nombre: 'Facundo', apellido: 'Moya', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-23', rut: '25.454.545-5', nombre: 'Isidora', apellido: 'Venegas', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-24', rut: '25.565.656-6', nombre: 'Santiago', apellido: 'Escobar', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-25', rut: '25.676.767-7', nombre: 'Catalina', apellido: 'Navarro', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-26', rut: '25.787.878-8', nombre: 'León', apellido: 'Cárdenas', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-27', rut: '25.898.989-9', nombre: 'Renato', apellido: 'Riquelme', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-28', rut: '25.909.090-K', nombre: 'Valentina', apellido: 'Salazar', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-29', rut: '25.010.101-1', nombre: 'Ignacio', apellido: 'Gómez', nivel: 'SALA_CUNA_MAYOR' },
+  { id: 'SCM-30', rut: '25.131.313-2', nombre: 'Fernanda', apellido: 'Ríos', nivel: 'SALA_CUNA_MAYOR' },
+
+  // --- MEDIO MENOR (15) ---
+  { id: 'MM-31', rut: '24.242.424-3', nombre: 'Diego', apellido: 'Gómez', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-32', rut: '24.353.535-4', nombre: 'Agustina', apellido: 'Fernández', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-33', rut: '24.464.646-5', nombre: 'Simón', apellido: 'Lagos', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-34', rut: '24.575.757-6', nombre: 'Ignacia', apellido: 'Orellana', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-35', rut: '24.686.868-7', nombre: 'Bruno', apellido: 'Garrido', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-36', rut: '24.797.979-8', nombre: 'Trinidad', apellido: 'Sanhueza', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-37', rut: '24.808.080-9', nombre: 'Julián', apellido: 'Bravo', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-38', rut: '24.919.191-K', nombre: 'Rafaela', apellido: 'Cares', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-39', rut: '24.020.202-1', nombre: 'Dante', apellido: 'Mellado', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-40', rut: '24.141.414-2', nombre: 'Constanza', apellido: 'Godoy', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-41', rut: '24.252.525-3', nombre: 'Liam', apellido: 'Pino', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-42', rut: '24.363.636-4', nombre: 'Pía', apellido: 'Araneda', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-43', rut: '24.474.747-5', nombre: 'Bastián', apellido: 'Toledo', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-44', rut: '24.585.858-6', nombre: 'Samantha', apellido: 'Fierro', nivel: 'NIVEL_MEDIO_MENOR' },
+  { id: 'MM-45', rut: '24.696.969-7', nombre: 'Samuel', apellido: 'Leal', nivel: 'NIVEL_MEDIO_MENOR' },
+
+  // --- MEDIO MAYOR (15) ---
+  { id: 'MMY-46', rut: '23.707.070-8', nombre: 'Cristian', apellido: 'Arancibia', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-47', rut: '23.818.181-9', nombre: 'Laura', apellido: 'Miranda', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-48', rut: '23.929.292-0', nombre: 'Matías', apellido: 'Valenzuela', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-49', rut: '23.030.303-1', nombre: 'Victoria', apellido: 'Yáñez', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-50', rut: '23.151.515-2', nombre: 'Gabriel', apellido: 'Osorio', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-51', rut: '23.262.626-3', nombre: 'Dominga', apellido: 'Becerra', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-52', rut: '23.373.737-4', nombre: 'Sebastián', apellido: 'Bustos', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-53', rut: '23.484.848-5', nombre: 'Rocío', apellido: 'Varela', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-54', rut: '23.595.959-6', nombre: 'Emiliano', apellido: 'Saavedra', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-55', rut: '23.606.060-7', nombre: 'Paz', apellido: 'Albornoz', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-56', rut: '23.717.171-8', nombre: 'Nicolás', apellido: 'Parra', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-57', rut: '23.828.282-9', nombre: 'Magdalena', apellido: 'Palma', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-58', rut: '23.939.393-K', nombre: 'Ian', apellido: 'Jaramillo', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-59', rut: '23.040.404-1', nombre: 'Colomba', apellido: 'Urrutia', nivel: 'NIVEL_MEDIO_MAYOR' },
+  { id: 'MMY-60', rut: '23.161.616-2', nombre: 'Franco', apellido: 'Guzmán', nivel: 'NIVEL_MEDIO_MAYOR' }
+];
+
 const nivelesFiltro = [
   { id: 'TODOS', label: 'Todos los niveles' },
   { id: 'SALA_CUNA_MENOR', label: 'Sala Cuna Menor' },
@@ -32,18 +102,26 @@ const Bitacora = () => {
   const [busqueda, setBusqueda] = useState('');
   const [nivelSeleccionado, setNivelSeleccionado] = useState('TODOS');
 
+  // useEffect(() => {
+  //   const cargarDatos = async () => {
+  //     try {
+  //       const data = await getEstudiantes();
+  //       setEstudiantes(data);
+  //     } catch (err) {
+  //       console.error(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   cargarDatos();
+  // }, []);
+
   useEffect(() => {
-    const cargarDatos = async () => {
-      try {
-        const data = await getEstudiantes();
-        setEstudiantes(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    cargarDatos();
+    // Simulamos que el servidor tarda 1 segundo en responder
+    setTimeout(() => {
+      setEstudiantes(datosPruebaEstudiantes); 
+      setLoading(false);
+    }, 1000);
   }, []);
 
   const handleGuardar = async () => {
@@ -94,7 +172,7 @@ const Bitacora = () => {
     return coincideNivel && coincideBusqueda;
   });
 
-  if (loading) return <div className=" flex items-center justify-center font-bold text-gray-400">Cargando nómina...</div>;
+  // if (loading) return <div className=" flex items-center justify-center font-bold text-gray-400">Cargando nómina...</div>;
 
   return (
     <div className="h-[calc(100vh-240px)] flex flex-col animate-in fade-in duration-500 overflow-hidden">
@@ -105,7 +183,7 @@ const Bitacora = () => {
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 flex items-center gap-2">
              Experiencias Pedagógicas
           </h2>
-          <p className="text-xs text-gray-500 font-medium">Hospital San José de Melipilla</p>
+          <p className="text-sm text-gray-500 font-medium mt-1">Hospital San José de Melipilla</p>
         </div>
         <div className="flex items-center gap-4">
           {mensaje && (
@@ -125,7 +203,7 @@ const Bitacora = () => {
         {/* COLUMNA IZQUIERDA: Formulario de la Actividad */}
         <div className="lg:w-1/3 flex flex-col shrink-0 min-h-0">
           <div className="p-1 flex flex-col flex-1 min-h-0">
-            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 shrink-0">1. Datos Actividad</h3>
+            <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 shrink-0">Datos Actividad</h3>
             
             <div className="space-y-4 flex flex-col flex-1 min-h-0">
               <div className="shrink-0">

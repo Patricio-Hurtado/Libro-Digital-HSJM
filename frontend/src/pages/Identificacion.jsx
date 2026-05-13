@@ -48,7 +48,7 @@ const Identificacion = () => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <div>
                     <h2 className="text-2xl font-bold text-gray-800 tracking-tight">Registro de identificación</h2>
-                    <p className="text-sm text-gray-500">Ficha de antecedentes de párvulos de nivel</p>
+                    <p className="text-sm text-gray-500  font-medium mt-1">Ficha de antecedentes de párvulos de nivel</p>
                 </div>
                 <Link
                     to="/nuevo-parvulo"

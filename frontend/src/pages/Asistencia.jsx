@@ -74,7 +74,7 @@ const Asistencia = () => {
       <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 sm:mb-8 gap-4 w-full">
         <div>
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800 tracking-tight">Control Asistencia HSJM</h2>
-          <p className="text-xs text-gray-500 font-medium mt-1">Hospital San José de Melipilla</p>
+          <p className="text-sm text-gray-500 font-medium mt-1">Hospital San José de Melipilla</p>
         </div>
         {/* Los controles se adaptan al 100% del ancho en móvil */}
         <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">

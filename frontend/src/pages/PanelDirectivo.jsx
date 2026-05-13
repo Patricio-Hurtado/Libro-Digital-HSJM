@@ -15,6 +15,31 @@ const detalleAlumnos = [
   { id: 2, nombre: 'Agustina Fernández', nivel: 'Medio Mayor', asistencia: 89 },
   { id: 3, nombre: 'Diego Gómez', nivel: 'Medio Menor', asistencia: 60 },
   { id: 4, nombre: 'Sofía Flores', nivel: 'Sala Cuna Mayor', asistencia: 88 },
+  { id: 5, nombre: 'Carla Flores', nivel: 'Sala Cuna Menor', asistencia: 75 },
+  { id: 6, nombre: 'Lucas Martínez', nivel: 'Sala Cuna Menor', asistencia: 80 },
+  { id: 7, nombre: 'Sofía López', nivel: 'Sala Cuna Menor', asistencia: 81 },
+  { id: 8, nombre: 'Matías Rodríguez', nivel: 'Sala Cuna Menor', asistencia: 78 },
+  { id: 9, nombre: 'Valentina González', nivel: 'Sala Cuna Menor', asistencia: 82 },
+  { id: 10, nombre: 'Benjamín Pérez', nivel: 'Sala Cuna Menor', asistencia: 77 },
+  { id: 11, nombre: 'Patricio Sánchez', nivel: 'Sala Cuna Menor', asistencia: 98 },
+  { id: 12, nombre: 'Isidora Ramírez', nivel: 'Sala Cuna Menor', asistencia: 85 },
+  { id: 13, nombre: 'Lisandro Martínez', nivel: 'Sala Cuna Menor', asistencia: 100 },
+  { id: 14, nombre: 'Matías Gómez', nivel: 'Sala Cuna Menor', asistencia: 60},
+  { id: 15, nombre: 'Sofía Ramírez', nivel: 'Sala Cuna Menor', asistencia: 40},
+  { id: 16, nombre: 'Diego Sánchez', nivel: 'Sala Cuna Menor', asistencia: 90},
+  { id: 17, nombre: 'Valentina López', nivel: 'Sala Cuna Menor', asistencia: 85},
+  { id: 18, nombre: 'Benjamín González', nivel: 'Sala Cuna Menor', asistencia: 60},
+  { id: 19, nombre: 'Alejandro Arancibia', nivel: 'Sala Cuna Menor', asistencia: 100},
+  { id: 20, nombre: 'Isidora Fernández', nivel: 'Sala Cuna Mayor', asistencia: 80},
+  { id: 21, nombre: 'Leandro Fernández', nivel: 'Sala Cuna Mayor', asistencia: 88},
+  { id: 22, nombre: 'Maria Ramírez', nivel: 'Sala Cuna Mayor', asistencia: 92},
+  { id: 23, nombre: 'Santiago Martínez', nivel: 'Sala Cuna Mayor', asistencia: 85},
+  { id: 24, nombre: 'Valentina Rodríguez', nivel: 'Sala Cuna Mayor', asistencia: 78},
+  { id: 25, nombre: 'Benjamín Ramírez', nivel: 'Sala Cuna Mayor', asistencia: 90},
+  { id: 26, nombre: 'Sofía González', nivel: 'Sala Cuna Mayor', asistencia: 82},
+  { id: 27, nombre: 'Matías Pérez', nivel: 'Sala Cuna Mayor', asistencia: 88},
+  { id: 28, nombre: 'Isidora Sánchez', nivel: 'Sala Cuna Mayor', asistencia: 95},
+  { id: 29, nombre: 'Leandro Ramírez', nivel: 'Sala Cuna Mayor', asistencia: 80},
 ];
 
 const alertasSimuladas = [
@@ -85,7 +110,7 @@ const PanelDirectivo = () => {
           <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
             <BarChart3 className="text-blue-600" /> Panel Directivo
           </h2>
-          <p className="text-xs text-gray-500 font-medium mt-1">Vista gerencial de indicadores - HSJM</p>
+          <p className="text-sm text-gray-500 font-medium mt-1">Vista gerencial de indicadores - HSJM</p>
         </div>
         
         {/* Contenedor de filtros responsivo */}
@@ -145,7 +170,7 @@ const PanelDirectivo = () => {
               <p className="text-2xl font-black text-gray-800">{valorKpiDinamico}</p>
             </div>
           </div>
-          <div className="bg-white p-4 rounded-2xl border border-red-200 bg-red-50/50 shadow-sm flex items-center gap-4 transition-all">
+          <div className="bg-white p-4 rounded-2xl border border-red-200 shadow-sm flex items-center gap-4 transition-all">
             <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600"><AlertTriangle size={24} /></div>
             <div>
               <p className="text-[10px] text-red-400 font-black uppercase tracking-wider">Alertas Activas</p>
