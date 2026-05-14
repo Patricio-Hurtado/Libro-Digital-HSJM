@@ -9,7 +9,9 @@ import {
   LogOut,
   UserCircle,
   Camera,
-  ChartNoAxesCombined
+  ChartNoAxesCombined,
+  ClipboardList,
+  BarChart3
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import PhotoUploadModal from './PhotoUploadModal';
@@ -41,10 +43,10 @@ const Layout = () => {
     '/identificacion': 'Identificación',
     '/asistencia': 'Asistencia diaria',
     '/planificacion': 'Planificación',
-    '/evaluacion': 'Evaluación',
     '/anecdotas': 'Anécdotas y vida',
     '/nuevo-parvulo': 'Nuevo párvulo',
-    '/dashboard': 'Dashboard',
+    '/evaluacioncopy': 'Registro Histórico',
+    '/registro-historico': 'Registro Histórico',
   };
 
   const currentTitle = routeTitles[location.pathname] || 'Panel';
@@ -58,12 +60,11 @@ const Layout = () => {
   const menuItems = [
     { name: 'Identificación', icon: <UserCheck size={20} />, path: '/identificacion' },
     { name: 'Asistencia diaria', icon: <Calendar size={20} />, path: '/asistencia' },
-    // { name: 'Planificación', icon: <ClipboardList size={20} />, path: '/planificacion' },
+    { name: 'Planificación', icon: <ClipboardList size={20} />, path: '/planificacion' },
     { name: 'Bitacora', icon: <NotebookPen size={20} />, path: '/bitacora' },
-    // { name: 'Evaluación', icon: <BarChart3 size={20} />, path: '/evaluacion' },
+    { name: 'Registro Histórico', icon: <BarChart3 size={20} />, path: '/registro-historico' },
     { name: 'Pauta Evaluación', icon: <ClipboardCheck size={20} />, path: '/pauta-evaluacion' },
-    // { name: 'Anécdotas y vida', icon: <BookOpen size={20} />, path: '/anecdotas' },
-    // { name: 'Dashboard', icon: <BarChart3 size={20} />, path: '/dashboard' },
+    { name: 'Anécdotas y vida', icon: <BookOpen size={20} />, path: '/anecdotas' },
     { name: 'Panel Directivo', icon: <ChartNoAxesCombined size={20} />, path: '/panel-directivo' },
   ];
 

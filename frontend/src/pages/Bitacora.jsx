@@ -47,20 +47,16 @@ const Bitacora = () => {
   }, []);
 
   const handleGuardar = async () => {
-    // 1. Validar que la actividad tenga datos
     if (!ambito || !nucleo || !descripcionOA) {
       setMensaje({ tipo: 'error', texto: 'Faltan datos de la actividad.' });
       setTimeout(() => setMensaje(null), 3000);
       return;
     }
 
-    // --- EL CANDADO DE SEGURIDAD PARA EL JEFE ---
-    // Filtramos las notas para extraer ÚNICAMENTE las de los alumnos que están visibles ahora mismo en pantalla
     const evaluacionesSeguras = Object.entries(evaluaciones)
       .filter(([idDelNino]) => estudiantesFiltrados.some(est => est.id === idDelNino))
       .map(([estudianteId, calificacion]) => ({ estudianteId, calificacion }));
 
-    // 2. Validar que haya evaluado a alguien del nivel que está mirando
     if (evaluacionesSeguras.length === 0) {
       setMensaje({ tipo: 'error', texto: 'No has evaluado a ningún alumno de este nivel.' });
       setTimeout(() => setMensaje(null), 3000);
@@ -72,7 +68,7 @@ const Bitacora = () => {
       ambito, 
       nucleo, 
       descripcionOA,
-      evaluaciones: evaluacionesSeguras // <--- Aquí va la magia
+      evaluaciones: evaluacionesSeguras 
     };
 
    try {

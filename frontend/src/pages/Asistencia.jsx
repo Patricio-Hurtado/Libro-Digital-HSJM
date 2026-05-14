@@ -3,70 +3,53 @@
   import { getEstudiantes } from '../services/estudianteService';
 
   const Asistencia = () => {
+  
     const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
-    
-    // 1. Nivel inicial configurado con el ID de la base de datos
-    const [nivelSeleccionado, setNivelSeleccionado] = useState('SALA_CUNA_MENOR');
-    
-    // Detecta automáticamente la jornada según la hora
-    const [jornadaVista, setJornadaVista] = useState(new Date().getHours() < 14 ? 'manana' : 'tarde');
+  const [nivelSeleccionado, setNivelSeleccionado] = useState('SALA_CUNA_MENOR');
+  const [jornadaVista, setJornadaVista] = useState(new Date().getHours() < 14 ? 'manana' : 'tarde');
 
-    // 2. Estado de carga y datos vacíos al inicio (esperando al servidor)
-    const [loading, setLoading] = useState(true);
-    const [parvulos, setParvulos] = useState([]);
+  // DATOS ESTÁTICOS 
+  const [parvulos, setParvulos] = useState([
+    { id: 1, rut: '22.344.555-K', nombre: 'Mateo Sebastián Valenzuela', nivel: 'SALA_CUNA_MENOR', manana: 'P', tarde: 'P', porcentaje: 95 },
+    { id: 2, rut: '23.111.222-1', nombre: 'Isabella Paz Retamal', nivel: 'SALA_CUNA_MENOR', manana: 'P', tarde: '-', porcentaje: 88 },
+    { id: 3, rut: '22.888.999-0', nombre: 'Benjamín Andrés Soto', nivel: 'SALA_CUNA_MENOR', manana: 'A', tarde: 'A', porcentaje: 72 },
 
-    // 3. Arreglo de niveles adaptado: 'id' para la lógica, 'label' para lo visual
-    const niveles = [
-      { id: 'SALA_CUNA_MENOR', label: 'SALA CUNA MENOR' },
-      { id: 'SALA_CUNA_MAYOR', label: 'SALA CUNA MAYOR' },
-      { id: 'NIVEL_MEDIO_MENOR', label: 'MEDIO MENOR' },
-      { id: 'NIVEL_MEDIO_MAYOR', label: 'MEDIO MAYOR' }
-    ];
+    { id: 3, rut: '22.888.999-0', nombre: 'Benjamín Andrés Soto', nivel: 'SALA_CUNA_MAYOR', manana: 'A', tarde: 'A', porcentaje: 72 },
+    { id: 4, rut: '24.000.111-2', nombre: 'Sofía Ignacia Morales', nivel: 'SALA_CUNA_MAYOR', manana: 'P', tarde: 'P', porcentaje: 100 },
+    { id: 5, rut: '23.555.666-7', nombre: 'Lucas Emilio Rojas', nivel: 'SALA_CUNA_MAYOR', manana: 'J', tarde: 'P', porcentaje: 90 },
 
-    // 4. El useEffect que hace la magia de ir a buscar los datos
-    useEffect(() => {
-      const cargarDatos = async () => {
-        try {
-          const data = await getEstudiantes();
-          
-          // Adaptamos la respuesta de la BD para que tu tabla la entienda
-          const datosAdaptados = data.map(nino => ({
-            id: nino.id,
-            rut: nino.rut,
-            nombre: `${nino.nombre} ${nino.apellido}`, 
-            nivel: nino.nivel, 
-            manana: '-', 
-            tarde: '-',  
-            porcentaje: 100 
-          }));
+    { id: 6, rut: '25.987.654-3', nombre: 'Camila Fernanda Díaz', nivel: 'NIVEL_MEDIO_MENOR', manana: 'P', tarde: 'J', porcentaje: 88 },
+    { id: 7, rut: '25.123.456-7', nombre: 'Gaspar Alonso Núñez', nivel: 'NIVEL_MEDIO_MENOR', manana: '-', tarde: '-', porcentaje: 85 },
+    { id: 8, rut: '24.321.654-3', nombre: 'Valentina María Fuentes', nivel: 'NIVEL_MEDIO_MENOR', manana: 'P', tarde: 'A', porcentaje: 80 },
 
-          setParvulos(datosAdaptados);
-        } catch (error) {
-          console.error("Error al cargar estudiantes del HSJM:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      cargarDatos();
-    }, []);
+    { id: 9, rut: '23.789.012-4', nombre: 'Matías Alejandro Herrera', nivel: 'NIVEL_MEDIO_MAYOR', manana: 'P', tarde: 'P', porcentaje: 92 },
+    { id: 10, rut: '22.456.789-0', nombre: 'Florencia Catalina Vargas', nivel: 'NIVEL_MEDIO_MAYOR', manana: 'A', tarde: 'P', porcentaje: 85 },
+    { id: 11, rut: '24.654.321-8', nombre: 'Agustín Nicolás Castro', nivel: 'NIVEL_MEDIO_MAYOR', manana: 'J', tarde: 'J', porcentaje: 78 }
+  ]);
 
-    // --- LÓGICA DE CÁLCULOS ---
-    const parvulosNivel = parvulos.filter(p => p.nivel === nivelSeleccionado);
-    const totalNivel = parvulosNivel.length;
-    
-    const presentesEnJornada = parvulosNivel.filter(p => p[jornadaVista] === 'P').length;
-    const justificadosEnJornada = parvulosNivel.filter(p => p[jornadaVista] === 'J').length;
-    const promedioNivel = totalNivel > 0 ? (parvulosNivel.reduce((acc, p) => acc + p.porcentaje, 0) / totalNivel).toFixed(1) : 0;
+  const niveles = [
+    { id: 'SALA_CUNA_MENOR', label: 'SALA CUNA MENOR' },
+    { id: 'SALA_CUNA_MAYOR', label: 'SALA CUNA MAYOR' },
+    { id: 'NIVEL_MEDIO_MENOR', label: 'MEDIO MENOR' },
+    { id: 'NIVEL_MEDIO_MAYOR', label: 'MEDIO MAYOR' }
+  ];
 
-    const actualizarAsistencia = (id, jornada, nuevoEstado) => {
-      setParvulos(prev => prev.map(p => p.id === id ? { ...p, [jornada]: nuevoEstado } : p));
-    };
+  // --- LÓGICA DE CÁLCULOS ---
+  const parvulosNivel = parvulos.filter(p => p.nivel === nivelSeleccionado);
+  const totalNivel = parvulosNivel.length;
+  
+  const presentesEnJornada = parvulosNivel.filter(p => p[jornadaVista] === 'P').length;
+  const justificadosEnJornada = parvulosNivel.filter(p => p[jornadaVista] === 'J').length;
+  
+  const promedioNivel = totalNivel > 0 
+    ? (parvulosNivel.reduce((acc, p) => acc + p.porcentaje, 0) / totalNivel).toFixed(1) 
+    : 0;
 
-    // Pantalla de carga mientras se obtienen los datos
-    if (loading) {
-      return <div className="flex justify-center items-center h-64 text-gray-500 font-bold">Cargando registros del Hospital...</div>;
-    }
-
+  const actualizarAsistencia = (id, jornada, nuevoEstado) => {
+    setParvulos(prev => prev.map(p => 
+      p.id === id ? { ...p, [jornada]: nuevoEstado } : p
+    ));
+  };
     return (
       <div className="transition-opacity duration-500 opacity-100">
         
@@ -76,7 +59,6 @@
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800 tracking-tight">Control Asistencia HSJM</h2>
             <p className="text-sm text-gray-500 font-medium mt-1">Hospital San José de Melipilla</p>
           </div>
-          {/* Los controles se adaptan al 100% del ancho en móvil */}
           <div className="flex flex-col sm:flex-row gap-3 w-full xl:w-auto">
             <input 
               type="date" 
@@ -152,7 +134,7 @@
           </button>
         </div>
 
-        {/* TABS DE NIVELES (Scroll horizontal suave en móviles) */}
+        {/* TABS DE NIVELES  */}
         <div className="flex border-b border-gray-200 mb-6 sm:mb-8 overflow-x-auto custom-scrollbar bg-white rounded-t-2xl px-2 sm:px-4 font-bold">
           {niveles.map(n => (
             <button

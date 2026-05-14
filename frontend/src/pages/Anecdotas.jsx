@@ -74,7 +74,7 @@ const Anecdotas = () => {
 
                 {/* COLUMNA IZQUIERDA: FORMULARIO DE NUEVO REGISTRO */}
                 <div className="lg:col-span-5 sticky top-8">
-                    <div className="main-card-container p-8 border border-gray-200 rounded-[2rem] shadow-xl shadow-gray-50">
+                    <div className="main-card-container p-8 border border-gray-200 rounded-4xl shadow-xl shadow-gray-50">
                         <div className="flex items-center gap-3 mb-8">
                             <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
                                 <FileEdit size={24} />
