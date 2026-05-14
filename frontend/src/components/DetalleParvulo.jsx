@@ -43,9 +43,6 @@ const DetalleParvulo = () => {
           <ArrowLeft size={20} /> Volver al listado
         </button>
         <div className="flex gap-2">
-          <span className={`px-3 py-1 rounded-full text-xs font-bold ${parvulo.estado === true ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-            {parvulo.estado === true ? 'VIGENTE' : 'RETIRADO'}
-          </span>
           <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase">
             {parvulo.nivel?.nivel || "Nivel no definido"}
           </span>
@@ -143,7 +140,7 @@ const DetalleParvulo = () => {
               </div>
             )}
 
-            {/* Dirección (Compartida para la familia) */}
+            {/* Dirección */}
             <div className="pt-4">
               <p className="flex items-start gap-3 text-sm text-gray-600">
                 <MapPin size={16} className="text-gray-400 mt-0.5" />
@@ -168,17 +165,13 @@ const DetalleParvulo = () => {
               <p className="font-bold text-gray-700">{parvulo.nacionalidad?.nacionalidad}</p>
             </div>
             <div>
-              <p className="text-[10px] text-gray-400 font-bold uppercase">Grupo Sanguíneo</p>
-              <p className="font-bold text-gray-700">{parvulo.tipoSangre?.grupo || "No definido"}</p>
+              <p className="text-[10px] text-gray-400 font-bold uppercase">Estado matricula</p>
+              <p className={`font-bold ${parvulo.estado === true ? 'text-green-700' : 'text-red-700'}`}>
+                {parvulo.estado === true ? 'VIGENTE' : 'RETIRADO'}
+              </p>
             </div>
-            {/* <div className="pt-2">
-              <button className="w-full bg-white border border-blue-200 text-blue-600 py-3 rounded-xl text-sm font-bold shadow-sm hover:bg-blue-600 hover:text-white transition-all">
-                Generar Certificado de Alumno Regular
-              </button>
-            </div> */}
           </div>
         </div>
-
       </div>
     </div>
   );

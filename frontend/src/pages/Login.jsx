@@ -60,7 +60,7 @@ const Login = () => {
 
         {error && (
           <div className="error-message mb-6">
-            <AlertTriangle size={18} className="flex-shrink-0" />
+            <AlertTriangle size={18} className="shrink-0" />
             <span>{error}</span>
           </div>
         )}
