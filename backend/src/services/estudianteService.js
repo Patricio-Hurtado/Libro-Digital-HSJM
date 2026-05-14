@@ -1,13 +1,12 @@
-// backend/src/services/estudianteService.js
 import prisma from '../config/db.js';
 
 export const registrarEstudiante = async (datos) => {
   return await prisma.$transaction(async (tx) => {
-    
+
     // 1. Función interna para procesar apoderados (Upsert)
     const UpsertApoderado = async (ap) => {
-      if (!ap || !ap.rut) return null; // Si no hay datos, no hace nada
-      
+      if (!ap || !ap.rut) return null; // Si no hay datos de apoderado, retornamos null para el suplente
+
       return await tx.apoderado.upsert({
         where: { rutApoderado: ap.rut },
         update: {
@@ -46,7 +45,7 @@ export const registrarEstudiante = async (datos) => {
         vacunasAlDia: Boolean(datos.vacunasAlDia),
         fechaIngreso: new Date(datos.fechaIngreso),
         estado: Boolean(datos.estado),
-        
+
         // IDs Relacionales
         sexoId: datos.sexoId,
         comunaId: datos.comunaId,
@@ -88,15 +87,16 @@ export const listarEstudiantes = async () => {
   return await prisma.estudiante.findMany({
     orderBy: { nombre: 'asc' },
     include: {
-      nivel: true,     // Para mostrar "Nivel Medio Mayor"
-      comuna: true,    // Para mostrar "Melipilla"
-      sexo: true,      // Para mostrar "Masculino/Femenino"
-      nacionalidad: true, // Para mostrar "Chilena" u otra nacionalidad
-      apoderados: {    // Para obtener el nombre del apoderado titular
+      nivel: true,
+      comuna: true,
+      sexo: true,
+      nacionalidad: true,
+      apoderados:
+      {
         include: {
           apoderado: true
         },
-        where: { prioridad: 1 } // Traemos solo al principal para la lista
+        where: { prioridad: 1 }
       }
     }
   });
@@ -106,14 +106,15 @@ export const obtenerPorId = async (id) => {
   return await prisma.estudiante.findUnique({
     where: { id },
     include: {
-      sexo: true,           // Trae el objeto { genero: "Masculino" }
-      comuna: true,         // Trae el objeto { comuna: "Melipilla" }
-      nivel: true,          // Trae el objeto { nivel: "Nivel Medio Mayor" }
-      tipoSangre: true,     // Trae el objeto { grupo: "O+" }
+      sexo: true,
+      comuna: true,
+      nivel: true,
+      tipoSangre: true,
       nacionalidad: true,
-      apoderados: {         // Entra a la tabla intermedia
+      apoderados:
+      {
         include: {
-          apoderado: true   // Trae los datos del apoderado real
+          apoderado: true
         }
       }
     }

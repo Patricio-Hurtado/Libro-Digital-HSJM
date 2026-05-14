@@ -61,7 +61,7 @@ const HistorialRegistros = () => {
                 <p className="text-sm text-gray-500">Cronología completa de actividades y evoluciones del párvulo</p>
             </div>
 
-            {/* BUSCADOR E INFO COMPACTA */}
+            {/* BUSCADOR E INFO */}
             <div className="flex flex-col md:flex-row items-end gap-4 mb-8 z-30 relative">
                 <div className="w-full max-w-xl relative">
                     <label className="text-sm font-bold text-gray-700 ml-1 mb-2 block">Seleccionar Párvulo</label>
@@ -112,7 +112,7 @@ const HistorialRegistros = () => {
                     )}
                 </div>
 
-                {/* INFO DEL PÁRVULO JUNTO AL BUSCADOR */}
+                {/* INFO DEL PÁRVULO  */}
                 {selectedEstudiante && (
                     <div className="flex-1 min-w-70 bg-blue-50 border border-blue-100 rounded-2xl p-3 flex items-center justify-between animate-in slide-in-from-left-4 duration-300">
                         <div className="flex items-center gap-3">
@@ -170,7 +170,7 @@ const HistorialRegistros = () => {
                                         </div>
                                     </div>
 
-                                    {/* BOTONES DE ACCIÓN (Iconos) */}
+                                    {/* BOTONES DE ACCIÓN */}
                                     <div className="flex gap-2">
                                         <button 
                                             title="Ver Detalle"

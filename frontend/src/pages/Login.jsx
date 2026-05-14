@@ -40,11 +40,8 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 md:p-6 font-sans antialiased animate-in fade-in duration-500">
-      
-      {/* Tarjeta de Login (Main Container) */}
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-gray-100 border border-gray-300 p-8 md:p-10">
-        
-        {/* Sección del Logo (Idéntica al Sidebar) */}
+        {/* Sección del Logo */}
         <div className="flex flex-col items-center text-center mb-10">
           <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-200 mb-5">
             <BookOpen size={36} strokeWidth={2.5} />
@@ -61,7 +58,6 @@ const Login = () => {
           </p>
         </div>
 
-        {/* Mensaje de Error (si existe) */}
         {error && (
           <div className="error-message mb-6">
             <AlertTriangle size={18} className="flex-shrink-0" />
@@ -137,7 +133,7 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Pie de página (Soporte) */}
+        {/* Pie de página */}
         <div className="text-center mt-10 pt-6 border-t border-gray-100">
           <p className="text-xs text-gray-400">
             ¿Problemas para acceder? Contacta al soporte técnico.

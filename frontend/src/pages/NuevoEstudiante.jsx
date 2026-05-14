@@ -76,7 +76,6 @@ const NuevoEstudiante = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Si no se mostró el suplente, enviamos esos campos vacíos o nulos
       const dataToSend = { ...formData };
       if (!showSuplente) {
         dataToSend.apoderadoSuplente = null;

@@ -63,8 +63,6 @@ const PanelDirectivo = () => {
   const datosFiltradosAsistencia = filtroNivel === 'TODOS' ? datosAsistencia : datosAsistencia.filter(d => d.nivel === filtroNivel);
   const alertasFiltradas = filtroNivel === 'TODOS' ? alertasSimuladas : alertasSimuladas.filter(a => a.nivel === filtroNivel);
   const alumnosFiltrados = filtroNivel === 'TODOS' ? detalleAlumnos : detalleAlumnos.filter(a => a.nivel === filtroNivel);
-
-  // MÁGIA DEL GRÁFICO: Cambia de Áreas a Núcleos según el filtro
   const datosGraficoLogro = filtroArea === 'TODAS' ? logroPorAreasGenerales : logroPorNucleosEspecificos[filtroArea];
 
   // --- CÁLCULO AUTOMÁTICO DE KPIs ---
@@ -79,7 +77,7 @@ const PanelDirectivo = () => {
   return (
     <div className="flex flex-col w-full h-full animate-in fade-in duration-500">
       
-      {/* HEADER Y FILTROS: Ajustado para que se apile en celulares */}
+      {/* HEADER Y FILTROS */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 shrink-0 gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
@@ -88,7 +86,7 @@ const PanelDirectivo = () => {
           <p className="text-sm text-gray-500 font-medium mt-1">Vista gerencial de indicadores - HSJM</p>
         </div>
         
-        {/* Contenedor de filtros responsivo */}
+        {/* Contenedor de filtros */}
         <div className="flex flex-col sm:flex-row gap-2 bg-white p-2 rounded-xl border border-gray-200 shadow-sm w-full lg:w-auto">
           <div className="flex items-center gap-2 px-2 pb-2 sm:pb-0 sm:border-r border-b sm:border-b-0 border-gray-100 w-full sm:w-auto">
             <Filter size={14} className="text-gray-400 shrink-0" />
@@ -181,7 +179,7 @@ const PanelDirectivo = () => {
             </div>
             <div className="flex-1 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                {/* GRÁFICO QUE CAMBIA MÁGICAMENTE (dataKey="nombre" para que sirva con áreas o núcleos) */}
+                {/* GRÁFICO QUE CAMBIA */}
                 <BarChart data={datosGraficoLogro} margin={{ top: 20, right: 0, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
                   <XAxis dataKey="nombre" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: '#6B7280' }} dy={10} interval={0} />

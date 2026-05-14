@@ -1,4 +1,3 @@
-// frontend/src/services/evaluacionService.js
 import api from '../api/axios';
 
 export const saveEvaluacion = async (evaluacionData) => {

@@ -1,4 +1,3 @@
-// backend/src/controllers/estudianteController.js
 import * as estudianteService from '../services/estudianteService.js';
 
 export const createEstudiante = async (req, res) => {
@@ -16,7 +15,6 @@ export const createEstudiante = async (req, res) => {
 
     // 1. Error de RUT Duplicado (P2002)
     if (error.code === 'P2002') {
-      // Usamos porque Prisma devuelve una lista de campos, ej: ['rut']
       const campo = (error.meta && error.meta.target) ? error.meta.target : 'dato';
       
       return res.status(400).json({ 
@@ -54,7 +52,6 @@ export const getEstudianteById = async (req, res) => {
   console.log("📥 [CONTROLLER] Buscando detalle para ID:", id);
 
   try {
-    // IMPORTANTE: Asegúrate que en estudianteService.js la función se llame 'obtenerPorId'
     const estudiante = await estudianteService.obtenerPorId(id);
     
     if (!estudiante) {

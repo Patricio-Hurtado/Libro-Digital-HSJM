@@ -53,7 +53,7 @@
     return (
       <div className="transition-opacity duration-500 opacity-100">
         
-        {/* HEADER - Responsivo: apilado en móvil, en línea en PC */}
+        {/* HEADER */}
         <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-6 sm:mb-8 gap-4 w-full">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800 tracking-tight">Control Asistencia HSJM</h2>

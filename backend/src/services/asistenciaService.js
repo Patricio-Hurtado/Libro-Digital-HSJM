@@ -1,4 +1,3 @@
-// Función para obtener el resumen administrativo que pidió el jefe
 export const getResumenNivel = async (req, res) => {
   const { mes, anio } = req.query;
 
@@ -15,7 +14,6 @@ export const getResumenNivel = async (req, res) => {
   const justificados = totalAsistencias.filter(a => a.estado === 'J').length;
   const total = totalAsistencias.length;
 
-  // El jefe suma P + J para el promedio administrativo
   const promedioNivel = total > 0 ? ((presentes + justificados) / total) * 100 : 0;
 
   res.json({

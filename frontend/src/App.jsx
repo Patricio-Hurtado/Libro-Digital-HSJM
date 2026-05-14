@@ -4,8 +4,6 @@ import Login from './pages/Login.jsx';
 import Identificacion from './pages/Identificacion.jsx';
 import NuevoEstudiante from './pages/NuevoEstudiante.jsx';
 import Asistencia from './pages/Asistencia.jsx';
-import Planificacion from './pages/Planificacion.jsx';
-import Anecdotas from './pages/Anecdotas.jsx';
 import DetalleParvulo from './components/DetalleParvulo.jsx';
 import Bitacora from './pages/Bitacora';
 import PautaEvaluacion from './pages/PautaEvaluacion';
@@ -27,10 +25,8 @@ function App() {
           <Route path="identificacion" element={<Identificacion />} />
           <Route path="nuevo-parvulo" element={<NuevoEstudiante />} />
           <Route path="asistencia" element={<Asistencia/>} />
-          <Route path="planificacion" element={<Planificacion />} />
           <Route path="bitacora" element={<Bitacora />} />
           <Route path="registro-historico" element={<RegistroHistorial />} />
-          <Route path="anecdotas" element={<Anecdotas />} />
           <Route path="/identificacion/:id" element={<DetalleParvulo />} />
           <Route path="pauta-evaluacion" element={<PautaEvaluacion />} />
           <Route path="panel-directivo" element={<PanelDirectivo />} />

@@ -2,7 +2,6 @@ import api from '../api/axios';
 
 export const saveBitacora = async (bitacoraData) => {
   try {
-    // Enviamos el paquete completo (clase + evaluaciones de los niños)
     const response = await api.post('/bitacoras', bitacoraData);
     return response.data;
   } catch (error) {

@@ -1,4 +1,3 @@
-// backend/prisma/seed.js
 import 'dotenv/config';
 import pkg from '@prisma/client';
 const { PrismaClient } = pkg;
@@ -6,7 +5,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
 import bcrypt from 'bcrypt';
 
-// 1. Configuración de conexión (Igual que en db.js)
+// 1. Configuración de conexión
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
@@ -14,7 +13,7 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log('🌱 Iniciando poblamiento masivo de EduBook...');
 
-  // 1. LIMPIEZA TOTAL (En orden de dependencia)
+  // 1. LIMPIEZA TOTAL
   await prisma.estudianteApoderado.deleteMany();
   await prisma.auditLog.deleteMany();
   await prisma.observation.deleteMany();
@@ -30,7 +29,7 @@ async function main() {
   await prisma.grupoSanguineo.deleteMany();
   await prisma.nacionalidad.deleteMany();
 
-  // 2. CREAR TABLAS MAESTRAS (Necesarias para los IDs)
+  // 2. CREAR TABLAS MAESTRAS 
   console.log('🏗️ Creando tablas maestras...');
   
   const comunas = {
@@ -76,7 +75,7 @@ async function main() {
   };
 
 
-  // 3. CREAR USUARIOS Generamos el hash una sola vez para usarlo en todos los usuarios de prueba
+  // 3. CREAR USUARIOS 
   const saltRounds = 10;
   const hashedDefaultPassword = await bcrypt.hash('password123', saltRounds);
 
@@ -98,7 +97,7 @@ async function main() {
   
   console.log('✅ 4 Usuarios creados con contraseñas hasheadas correctamente.');
 
-  // 4. DATA DE ESTUDIANTES (Mapeada a la nueva estructura)
+  // 4. DATA DE ESTUDIANTES 
   const estudiantesRaw = [
     {
       rut: '25.001.001-1', nombre: 'Sofía Valentina', apellido: 'Flores Pérez', sexo: 'Femenino', nacionalidad: 'Chilena',
@@ -194,7 +193,6 @@ async function main() {
       fechaNacimiento: e.fechaNacimiento,
       direccion: e.direccion,
       vacunasAlDia: true,
-      // Agregamos estos para evitar errores de campos vacíos
       prevision: 'Fonasa', 
       fechaIngreso: new Date(), 
       
@@ -212,7 +210,7 @@ async function main() {
       estudianteId: estudiante.id,
       apoderadoId: apoderado.id,
       tipoApoderado: 'TITULAR',
-      parentesco: e.apoderado.parentesco, // Asegúrate que sea MADRE, PADRE, TUTOR, ABUELO u OTRO
+      parentesco: e.apoderado.parentesco, 
       prioridad: 1
     }
   });

@@ -1,24 +1,3 @@
-// import express from 'express';
-// import cors from 'cors';
-// import { checkHealth } from './controllers/testController.js';
-// import { login } from './services/authService.js';
-
-// const app = express();
-// const PORT = process.env.PORT || 3000;
-
-// app.use(cors());
-// app.use(express.json());
-
-// // Ruta de prueba directa
-// //app.get('/api/health', checkHealth);
-
-// // Ruta de autenticación
-// app.post('/api/auth/login', login);
-
-// app.listen(PORT, () => {
-//   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
-// });
-
 import express from 'express';
 import cors from 'cors';
 import path from 'path';

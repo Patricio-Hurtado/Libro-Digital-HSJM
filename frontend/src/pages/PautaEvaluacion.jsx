@@ -7,7 +7,6 @@ import autoTable from 'jspdf-autotable';
 import logoHospital from '../assets/logo-hospital.png';
 import logoJardin from '../assets/logo-salacuna.png';
 
-// --- ESTRUCTURA DEL EXCEL DEL JEFE ---
 const matrizEvaluacion = {
   "Desarrollo Personal": ["Identidad", "Autonomía", "Convivencia"],
   "Comunicación Integral": ["Lenguaje Verbal", "Lenguajes Artísticos"],
@@ -84,7 +83,7 @@ const PautaEvaluacion = () => {
 
       doc.addImage(logoHospital, 'PNG', 14, 10, 40, 25); // Logo Izquierda
       doc.addImage(logoJardin, 'PNG', 160, 10, 40, 25);  // Logo Derecha
-       // 2. Título y Membrete (Movidos hacia abajo a la posición 40 para hacerle espacio a los logos)
+       // 2. Título y Encabezado
       doc.setFontSize(18);
       doc.setFont(undefined, 'bold');
       doc.text("Informe Pedagógico al Hogar", 14, 40);
@@ -94,7 +93,7 @@ const PautaEvaluacion = () => {
       doc.setTextColor(100);
       doc.text("Hospital San José de Melipilla - Aula Hospitalaria", 14, 46);
 
-      // 3. Datos del Alumno (También movidos hacia abajo)
+      // 3. Datos del Alumno
       doc.setTextColor(0);
       doc.setFontSize(11);
       doc.text(`Párvulo: ${estudianteObj.nombre} ${estudianteObj.apellido}`, 14, 60);
@@ -102,7 +101,7 @@ const PautaEvaluacion = () => {
       doc.text(`Nivel: ${estudianteObj.nivel}`, 120, 60);
       doc.text(`Periodo: ${tipoEvaluacion}`, 120, 66);
 
-      // 4. Construir las filas de la tabla
+      // 4. Preparar datos para la tabla
       const filasDeTabla = [];
       Object.entries(matrizEvaluacion).forEach(([area, nucleos]) => {
         filasDeTabla.push([
@@ -113,7 +112,7 @@ const PautaEvaluacion = () => {
         });
       });
 
-      // 5. Tabla (Movida hacia abajo a la posición startY: 75)
+      // 5. Tabla
       autoTable(doc, {
         startY: 75,
         head: [['Área de Desarrollo y Núcleos', 'Evaluación (L / EP / NO)']],
@@ -146,11 +145,8 @@ const PautaEvaluacion = () => {
 
       doc.line(30, firmasY, 80, firmasY);
       doc.text("Firma Educadora", 42, firmasY + 6);
-
       doc.line(130, firmasY, 180, firmasY);
       doc.text("Firma Dirección", 142, firmasY + 6);
-
-      // 8. ¡Guardar y Descargar!
       doc.save(`Informe_${estudianteObj.nombre}_${estudianteObj.apellido}.pdf`);
       setMensaje({ tipo: 'exito', texto: '¡PDF descargado al instante!' });
 

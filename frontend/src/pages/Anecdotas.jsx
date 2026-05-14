@@ -54,7 +54,6 @@ const Anecdotas = () => {
         cargarDatos();
     }, []);
 
-    // Filtrado para el buscador del select
     const estudiantesFiltrados = estudiantes.filter(est =>
         `${est.nombre} ${est.apellido}`.toLowerCase().includes(busqueda.toLowerCase())
     );

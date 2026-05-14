@@ -11,7 +11,6 @@ const Identificacion = () => {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
 
-    //Cargar datos al mostrar el componente
     useEffect(() => {
         const cargarDatos = async () => {
             try {
@@ -26,7 +25,6 @@ const Identificacion = () => {
         cargarDatos();
     }, []);
 
-    // Filtrar y ordenar estudiantes basado en el término de búsqueda
     const filteredEstudiantes = estudiantes
         .filter(est => {
             const fullName = `${est.nombre || ''} ${est.apellido || ''}`.toLowerCase();
@@ -122,7 +120,7 @@ const Identificacion = () => {
                                                 <FileText size={18} />
                                             </Link>
 
-                                            {/* Aquí podrías poner el botón de editar en el futuro */}
+                                            {/* Aquí ira el boton de editar */}
                                         </div>
                                     </td>
                                 </tr>

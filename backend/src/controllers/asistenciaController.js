@@ -6,14 +6,12 @@ export const registrarAsistencia = async (req, res) => {
   hoy.setHours(0, 0, 0, 0);
   const fechaRegistro = new Date(fecha);
 
-  // VALIDACIÓN DEL JEFE: Si la fecha es menor a hoy y no es ADMIN
   if (fechaRegistro < hoy && user.role !== 'ADMIN' && user.role !== 'DIRECTORA') {
     return res.status(403).json({ 
       error: "Jornada cerrada. No tiene permisos para modificar asistencia histórica." 
     });
   }
 
-  // Si pasa la validación, procedemos a guardar con Prisma
   try {
     const registro = await prisma.asistencia.upsert({
       where: {
