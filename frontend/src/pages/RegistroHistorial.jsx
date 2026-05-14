@@ -114,7 +114,7 @@ const HistorialRegistros = () => {
 
                 {/* INFO DEL PÁRVULO JUNTO AL BUSCADOR */}
                 {selectedEstudiante && (
-                    <div className="flex-1 min-w-[280px] bg-blue-50 border border-blue-100 rounded-2xl p-3 flex items-center justify-between animate-in slide-in-from-left-4 duration-300">
+                    <div className="flex-1 min-w-70 bg-blue-50 border border-blue-100 rounded-2xl p-3 flex items-center justify-between animate-in slide-in-from-left-4 duration-300">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-blue-600 shadow-sm shrink-0">
                                 <User size={20} />
@@ -191,7 +191,7 @@ const HistorialRegistros = () => {
                     </div>
                 </div>
             ) : (
-                <div className="h-64 flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-200 rounded-[32px] italic">
+                <div className="h-64 flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-200 rounded-4xl italic">
                     <Search size={40} className="mb-2 opacity-20" />
                     Selecciona un párvulo para cargar su historial
                 </div>

@@ -63,7 +63,7 @@ const Planificacion = () => {
         
         {/* Tarjeta: Nueva Planificación (Dashed) */}
         <div className="group cursor-pointer">
-          <div className="h-full min-h-[220px] bg-blue-50 border-2 border-dashed border-blue-200 rounded-3xl p-8 flex flex-col items-center justify-center text-center transition-all hover:bg-blue-100 hover:border-blue-300">
+          <div className="h-full min-h-55 bg-blue-50 border-2 border-dashed border-blue-200 rounded-3xl p-8 flex flex-col items-center justify-center text-center transition-all hover:bg-blue-100 hover:border-blue-300">
             <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-blue-100">
               <Plus size={24} strokeWidth={3} />
             </div>
@@ -75,7 +75,7 @@ const Planificacion = () => {
         </div>
 
         {/* Tarjeta: Ejemplo de Unidad (Mapeada de tus datos) */}
-        <div className="main-card-container !p-0 overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-gray-100 transition-all border border-gray-100 rounded-3xl">
+        <div className="main-card-container p-0! overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-gray-100 transition-all border border-gray-100 rounded-3xl">
           <div className="p-8 flex-1">
             <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 mb-5">
               <FileText size={24} />
@@ -105,7 +105,7 @@ const Planificacion = () => {
         </div>
 
         {/* Tarjeta: Planificación Anual */}
-        <div className="main-card-container !p-0 overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-gray-100 transition-all border border-gray-100 rounded-3xl">
+        <div className="main-card-container p-0! overflow-hidden flex flex-col group hover:shadow-2xl hover:shadow-gray-100 transition-all border border-gray-100 rounded-3xl">
           <div className="p-8 flex-1">
             <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 mb-5">
               <FileText size={24} />
